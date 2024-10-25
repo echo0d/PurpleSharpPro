@@ -169,7 +169,7 @@ namespace PurpleSharp.Simulations
             return serviceHandleCreated != IntPtr.Zero;
         }
 
-        public static void CreateServiceApi(string log, Lib.Logger logger, bool cleanup)
+        public static void CreateServiceApi(string serviceName, string serviceDispName, string servicePath, bool cleanup, Lib.Logger logger)
         {
 
             var scmHandle = WinAPI.OpenSCManager(null, null, Structs.SCM_ACCESS.SC_MANAGER_CREATE_SERVICE);
@@ -178,14 +178,12 @@ namespace PurpleSharp.Simulations
             {
                 DateTime dtime = DateTime.Now;
                 int err = Marshal.GetLastWin32Error();
-                //Console.WriteLine("{0}[{1}] Could not obtain a handle to SCM on {2}. Not an admin ?", "".PadLeft(4), dtime.ToString("MM/dd/yyyy HH:mm:ss"), computer.Fqdn);
+                // Console.WriteLine("{0}[{1}] Could not obtain a handle to SCM on {2}. Not an admin ?", "".PadLeft(4), dtime.ToString("MM/dd/yyyy HH:mm:ss"));
+                logger.Error("Could not obtain a handle to SCM. Not an admin ??");
                 return;
 
             }
-            string servicePath = @"C:\Windows\Temp\superlegit.exe";      // A path to some running service now
-            string serviceName = "UpdaterService";
-            string serviceDispName = "Super Legit Update Service";
-
+            
             IntPtr svcHandleCreated = IntPtr.Zero;
             int createdErr = 0;
             bool created = CreateService(scmHandle, servicePath, serviceName, serviceDispName, out svcHandleCreated, out createdErr);

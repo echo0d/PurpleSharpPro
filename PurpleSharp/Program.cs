@@ -934,29 +934,29 @@ namespace PurpleSharp
 
                     //T1047 - Windows Management Instrumentation
                     case "T1047":
-                        Simulations.Execution.ExecuteWmiCmd(playbook_task.parameter, log);
+                        Simulations.Execution.ExecuteWmiCmd(playbook_task.filePath, log);
                         break;
 
                     case "T1059.001":
-                        if (playbook_task.variation == 1) Simulations.Execution.ExecutePowershellCmd(playbook_task.parameter,log);
-                        else Simulations.Execution.ExecutePowershellNET(playbook_task.parameter,log);
+                        if (playbook_task.variation == 1) Simulations.Execution.ExecutePowershellCmd(playbook_task.command,log);
+                        else Simulations.Execution.ExecutePowershellNET(playbook_task.command,log);
                         break;
 
                     case "T1059.003":
-                        Simulations.Execution.WindowsCommandShell(playbook_task.parameter, log);
+                        Simulations.Execution.WindowsCommandShell(playbook_task.command, log);
                         break;
 
 
                     case "T1059.005":
-                        Simulations.Execution.VisualBasic(playbook_task.parameter, log);
+                        Simulations.Execution.VisualBasic(playbook_task.filePath, log);
                         break;
 
                     case "T1059.007":
-                        Simulations.Execution.JScript(playbook_task.parameter, log);
+                        Simulations.Execution.JScript(playbook_task.filePath, log);
                         break;
 
                     case "T1569.002":
-                        Simulations.Execution.ServiceExecution(playbook_task.parameter, log, playbook_task.cleanup);
+                        Simulations.Execution.ServiceExecution(playbook_task.serviceName, playbook_task.servicePath, log, playbook_task.cleanup);
                         break;
 
 
@@ -967,16 +967,16 @@ namespace PurpleSharp
                     //T1053.005 - Scheduled Task
 
                     case "T1053.005":
-                        Simulations.Persistence.CreateScheduledTaskCmd(log, playbook_task.cleanup);
+                        Simulations.Persistence.CreateScheduledTaskCmd(log, playbook_task.taskName, playbook_task.taskPath, playbook_task.cleanup);
                         break;
 
                     case "T1136.001":
-                        if (playbook_task.variation == 1) Simulations.Persistence.CreateLocalAccountApi(log, playbook_task.cleanup);
-                        else Simulations.Persistence.CreateLocalAccountCmd(log, playbook_task.cleanup);
+                        if (playbook_task.variation == 1) Simulations.Persistence.CreateLocalAccountApi(log, playbook_task.user, playbook_task.cleanup);
+                        else Simulations.Persistence.CreateLocalAccountCmd(log, playbook_task.user, playbook_task.password, playbook_task.cleanup);
                         break;
 
                     case "T1543.003":
-                        if (playbook_task.variation == 1) Simulations.Persistence.CreateWindowsServiceApi(log, playbook_task.cleanup);
+                        if (playbook_task.variation == 1) Simulations.Persistence.CreateWindowsServiceApi(log, playbook_task.serviceName, playbook_task.serviceDisplayName, playbook_task.servicePath, playbook_task.cleanup);
                         else Simulations.Persistence.CreateWindowsServiceCmd(log, playbook_task.cleanup);
                         break;
 

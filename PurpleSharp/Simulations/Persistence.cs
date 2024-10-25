@@ -7,7 +7,7 @@ namespace PurpleSharp.Simulations
 {
     class Persistence
     {
-        public static void CreateLocalAccountApi(string log, bool cleanup)
+        public static void CreateLocalAccountApi(string log, string user, bool cleanup)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
@@ -24,26 +24,32 @@ namespace PurpleSharp.Simulations
             }
         }
 
-        public static void CreateLocalAccountCmd(string log, bool cleanup)
+        public static void CreateLocalAccountCmd(string log, string user, string password, bool cleanup)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1136.001");
             logger.TimestampInfo("Using the command line to execute the technique");
+            if (user == null)
+            {
+                user = "haxor";
+            }
 
+            if (password == null)
+            {
+                password = "Passw0rd123El7";
+            }
             try
             {
-                string username = "haxor";
-                string pwd = "Passw0rd123El7";
-                ExecutionHelper.StartProcessApi("", String.Format("net user {0} {1} /add", username, pwd), logger);
+                ExecutionHelper.StartProcessApi("", String.Format("net user {0} {1} /add", user, password), logger);
                 Thread.Sleep(2000);
                 if (cleanup)
                 {
-                    ExecutionHelper.StartProcessApi("", String.Format("net user {0} /delete", username), logger);
+                    ExecutionHelper.StartProcessApi("", String.Format("net user {0} /delete", user), logger);
                 }
                 else
                 {
-                    logger.TimestampInfo(String.Format("The created local user {0} was not deleted as part of the simulation", username));
+                    logger.TimestampInfo(String.Format("The created local user {0} was not deleted as part of the simulation", user));
                 }
 
 
@@ -55,21 +61,26 @@ namespace PurpleSharp.Simulations
             }
         }
 
-        public static void CreateScheduledTaskCmd(string log, bool cleanup)
+        public static void CreateScheduledTaskCmd(string log, string taskName, string taskPath, bool cleanup)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1053.005");
             logger.TimestampInfo("Using the command line to execute the technique");
-
+            if (taskPath == "")
+            {
+                taskPath = @"C:\Windows\Temp\xyz12345.exe";
+            }
+            if (taskName == "")
+            {
+                taskName = "BadScheduledTask";
+            }
             try
             {
-                string taskName = "BadScheduledTask";
-                string binpath = @"C:\Windows\Temp\xyz12345.exe";
-                ExecutionHelper.StartProcessApi("", String.Format(@"SCHTASKS /CREATE /SC DAILY /TN {0} /TR ""{1}"" /ST 13:00", taskName, binpath), logger);
+                ExecutionHelper.StartProcessApi("", String.Format(@"SCHTASKS /CREATE /SC DAILY /TN {0} /TR ""{1}"" /ST 13:00", taskName, taskPath), logger);
                 if (cleanup)
                 {
-                    ExecutionHelper.StartProcessApi("", String.Format(@"SCHTASKS /DELETE /F /TN {0}", taskName, binpath), logger);
+                    ExecutionHelper.StartProcessApi("", String.Format(@"SCHTASKS /DELETE /F /TN {0}", taskName), logger);
                     Thread.Sleep(3000);
                 }
                 else
@@ -82,8 +93,6 @@ namespace PurpleSharp.Simulations
             {
                 logger.SimulationFailed(ex);
             }
-
-
         }
         public static void CreateRegistryRunKeyNET(string log, bool cleanup)
         {
@@ -136,24 +145,33 @@ namespace PurpleSharp.Simulations
             
         }
 
-        public static void CreateWindowsServiceApi(string log, bool cleanup)
+        public static void CreateWindowsServiceApi(string log, string serviceName, string serviceDisplayName, string servicePath, bool cleanup)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1543.003");
             logger.TimestampInfo("Using the Win32 API CreateService function to execute the technique");
-
+            if (servicePath == null)
+            {
+                servicePath = @"C:\Windows\Temp\superlegit.exe"; 
+            }
+            if (serviceName == null)
+            {
+                serviceName = "UpdaterService";
+            }
+            if (serviceDisplayName == null)
+            {
+                serviceDisplayName = "Super Legit Update Service";
+            }
             try
             {
-                PersistenceHelper.CreateServiceApi(log, logger, cleanup);
+                PersistenceHelper.CreateServiceApi(serviceName, serviceDisplayName, servicePath, cleanup, logger);
                 logger.SimulationFinished();
             }
             catch(Exception ex)
             {
                 logger.SimulationFailed(ex);
             }
-
-            
         }
         public static void CreateWindowsServiceCmd(string log, bool cleanup)
         {

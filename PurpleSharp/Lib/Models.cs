@@ -137,17 +137,25 @@ namespace PurpleSharp.Lib
         public int[] ports { get; set; } = { 135, 139, 443, 445, 1433, 3306, 3389 };
 
         // Remote Service Creation
-        public string serviceName { get; set; } ="PurpleSharp Updater";
-        public string servicePath { get; set; } = @"C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe";
+        public string serviceName { get; set; }
+        public string servicePath { get; set; } 
+        public string serviceDisplayName { get; set; }
 
         // WinRM remote execution and WMI remote execution
-        public string command { get; set; } = @"C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe";
+        public string remoteCommand { get; set; } = @"C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe";
 
         // Creating local and remote scheduled tasks
         public string taskName { get; set; } = @"PurpleSharp Updater";
         public string taskPath { get; set; } = @"C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe";
+
+        // 执行命令或可执行文件
+        public string command { get; set; }
+        public string filePath { get; set; }
         
-        public string parameter { get; set; } = @"";
+        // 用户相关
+        public string user { get; set; }
+        public string password { get; set; }
+        
 
 
 
