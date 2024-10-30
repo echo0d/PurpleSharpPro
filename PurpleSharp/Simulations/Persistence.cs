@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Management;
 using System.Threading;
+using PurpleSharp.Lib;
 
 
 namespace PurpleSharp.Simulations
 {
     class Persistence
     {
-        public static void CreateLocalAccountApi(string log, string user, bool cleanup)
+        public static void CreateLocalAccountApi(string log, PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1136.001");
             logger.TimestampInfo("Using the Win32 API NetUserAdd function to execute the technique");
+            string user = playbookTask.user;
+            bool cleanup = playbookTask.cleanup;
+            if (user == null)
+            {
+                user = "haxor";
+            }
             try
             {
-                PersistenceHelper.CreateUserApi("haxor", logger, cleanup);
+                PersistenceHelper.CreateUserApi(user, logger, cleanup);
                 logger.SimulationFinished();
             }
             catch (Exception ex)
@@ -24,12 +31,15 @@ namespace PurpleSharp.Simulations
             }
         }
 
-        public static void CreateLocalAccountCmd(string log, string user, string password, bool cleanup)
+        public static void CreateLocalAccountCmd(string log, PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1136.001");
             logger.TimestampInfo("Using the command line to execute the technique");
+            string user = playbookTask.user;
+            string password = playbookTask.password;
+            bool cleanup = playbookTask.cleanup;
             if (user == null)
             {
                 user = "haxor";
@@ -61,12 +71,15 @@ namespace PurpleSharp.Simulations
             }
         }
 
-        public static void CreateScheduledTaskCmd(string log, string taskName, string taskPath, bool cleanup)
+        public static void CreateScheduledTaskCmd(string log, PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1053.005");
             logger.TimestampInfo("Using the command line to execute the technique");
+            string taskPath = playbookTask.taskPath;
+            string taskName = playbookTask.taskName;
+            bool cleanup = playbookTask.cleanup;
             if (taskPath == "")
             {
                 taskPath = @"C:\Windows\Temp\xyz12345.exe";
@@ -94,16 +107,33 @@ namespace PurpleSharp.Simulations
                 logger.SimulationFailed(ex);
             }
         }
-        public static void CreateRegistryRunKeyNET(string log, bool cleanup)
+        public static void CreateRegistryRunKeyNET(string log, PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1547.001");
             logger.TimestampInfo("Using the Microsoft.Win32 .NET namespace to execute the technique");
+            string regPath = playbookTask.regPath;
+            string regKey = playbookTask.regkey;
+            string regValue = playbookTask.regvalue;
+            bool cleanup = playbookTask.cleanup;
+            if (regPath == null)
+            {
+                regPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+            }
 
+            if (regKey == null)
+            {
+                regKey = "BadApp";
+            }
+
+            if (regValue == null)
+            {
+                regValue = @"C:\Windows\Temp\xyz123456.exe";
+            }
             try
             {
-                PersistenceHelper.RegistryRunKey(logger, cleanup);
+                PersistenceHelper.RegistryRunKey(logger, regPath,regKey, regValue,cleanup);
                 logger.SimulationFinished();
             }
             catch(Exception ex)
@@ -113,27 +143,42 @@ namespace PurpleSharp.Simulations
             
         }
 
-        public static void CreateRegistryRunKeyCmd(string log, bool cleanup)
+        public static void CreateRegistryRunKeyCmd(string log,PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1547.001");
             logger.TimestampInfo("Using the command line to execute the technique");
+            string regPath = playbookTask.regPath;
+            string regKey = playbookTask.regkey;
+            string regValue = playbookTask.regvalue;
+            bool cleanup = playbookTask.cleanup;
+            if (regPath == null)
+            {
+                regPath = @"HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+            }
+            if (regKey == null)
+            {
+                regKey = "BadApp";
+            }
+
+            if (regValue == null)
+            {
+                regValue = @"C:\Windows\Temp\xyz123456.exe";
+            }
 
             try
             {
-                string regKey = "BadApp";
-                string binpath = @"C:\Windows\Temp\xyz12345.exe";
 
-                ExecutionHelper.StartProcessApi("", String.Format(@"REG ADD HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /V {0} /t REG_SZ /F /D {1}", regKey, binpath), logger);
+                ExecutionHelper.StartProcessApi("", String.Format(@"REG ADD {0} /V {1} /t REG_SZ /F /D {2}", regPath, regKey, regValue), logger);
                 if (cleanup)
                 {
                     Thread.Sleep(3000);
-                    ExecutionHelper.StartProcessApi("", String.Format(@"REG DELETE HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /V {0} /F", regKey), logger);
+                    ExecutionHelper.StartProcessApi("", String.Format(@"REG DELETE {0} /V {1} /F", regPath, regKey), logger);
                 }
                 else
                 {
-                    logger.TimestampInfo(@"The created RegKey : HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\" + regKey + " was not deleted as part of the simulation");
+                    logger.TimestampInfo(@"The created RegKey : "+ regPath + " "+ regKey + " was not deleted as part of the simulation");
                 }
                 logger.SimulationFinished();
             }
@@ -145,12 +190,16 @@ namespace PurpleSharp.Simulations
             
         }
 
-        public static void CreateWindowsServiceApi(string log, string serviceName, string serviceDisplayName, string servicePath, bool cleanup)
+        public static void CreateWindowsServiceApi(string log, PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1543.003");
             logger.TimestampInfo("Using the Win32 API CreateService function to execute the technique");
+            string servicePath = playbookTask.servicePath;
+            string serviceName = playbookTask.serviceName;
+            string serviceDisplayName = playbookTask.serviceDisplayName;
+            bool cleanup = playbookTask.cleanup;
             if (servicePath == null)
             {
                 servicePath = @"C:\Windows\Temp\superlegit.exe"; 
@@ -173,17 +222,25 @@ namespace PurpleSharp.Simulations
                 logger.SimulationFailed(ex);
             }
         }
-        public static void CreateWindowsServiceCmd(string log, bool cleanup)
+        public static void CreateWindowsServiceCmd(string log, PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1543.003");
             logger.TimestampInfo("Using the command line to execute the technique");
-
+            string serviceName = playbookTask.serviceName;
+            string servicePath = playbookTask.servicePath;
+            bool cleanup = playbookTask.cleanup;
+            if (servicePath == null)
+            {
+                servicePath = @"C:\Windows\Temp\superlegit.exe"; 
+            }
+            if (serviceName == null)
+            {
+                serviceName = "UpdaterService";
+            }
             try
             {
-                string serviceName = "UpdaterService";
-                string servicePath = @"C:\Windows\Temp\superlegit.exe";
                 ExecutionHelper.StartProcessApi("", String.Format(@"sc create {0} binpath= {1} type= own start= auto", serviceName, servicePath), logger);
                 Thread.Sleep(3000);
                 if (cleanup) ExecutionHelper.StartProcessApi("", String.Format(@"sc delete {0}", serviceName), logger);
@@ -195,14 +252,35 @@ namespace PurpleSharp.Simulations
             }  
         }
 
-        public static void WMIEventSubscription(string log, bool cleanup)
+        public static void WMIEventSubscription(string log, PlaybookTask playbookTask)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1546.003");
             logger.TimestampInfo("Using the System.Management .NEt namespace to execute the technique");
+            string wmiSubscription = playbookTask.wmiSubscription;
+            string targetInstance = playbookTask.targetInstance;
+            string filterQuery = playbookTask.filterQuery;
+            string consumerCommandLine = playbookTask.consumerCommandLine;
+            bool cleanup = playbookTask.cleanup;
+            if (wmiSubscription == null)
+            {
+                wmiSubscription = "MaliciousWmiSubscription";
+            }
 
-            string wmiSubscription = "MaliciousWmiSubscription";
+            if (targetInstance == null)
+            {
+                targetInstance = "notepad.exe";
+            }
+            if (filterQuery == null)
+            {
+                filterQuery = @"SELECT * FROM __InstanceCreationEvent WITHIN 5 " + "WHERE TargetInstance ISA \"Win32_Process\" " + "AND TargetInstance.Name = " + "\"" + targetInstance + "\"";
+            }
+
+            if (consumerCommandLine == null)
+            {
+                consumerCommandLine = "powershell.exe -nop -c calc";
+            }
             //string vbscript64 = "<INSIDE base64 encoded VBS here>";
             //string vbscript = Encoding.UTF8.GetString(Convert.FromBase64String(vbscript64));
             try
@@ -212,12 +290,9 @@ namespace PurpleSharp.Simulations
                 ManagementObject myBinder = null;
 
                 ManagementScope scope = new ManagementScope(@"\\.\root\subscription");
-
-                ManagementClass wmiEventFilter = new ManagementClass(scope, new
-                ManagementPath("__EventFilter"), null);
-                String strQuery = @"SELECT * FROM __InstanceCreationEvent WITHIN 5 " + "WHERE TargetInstance ISA \"Win32_Process\" " + "AND TargetInstance.Name = \"notepad.exe\"";
-
-                WqlEventQuery myEventQuery = new WqlEventQuery(strQuery);
+                ManagementClass wmiEventFilter = new ManagementClass(scope, new ManagementPath("__EventFilter"), null);
+                WqlEventQuery myEventQuery = new WqlEventQuery(filterQuery);
+                
                 EventFilter = wmiEventFilter.CreateInstance();
                 EventFilter["Name"] = wmiSubscription;
                 EventFilter["Query"] = myEventQuery.QueryString;
@@ -228,9 +303,9 @@ namespace PurpleSharp.Simulations
 
                 EventConsumer = new ManagementClass(scope, new ManagementPath("CommandLineEventConsumer"), null).CreateInstance();
                 EventConsumer["Name"] = wmiSubscription;
-                EventConsumer["CommandLineTemplate"] = "powershell.exe";
+                EventConsumer["CommandLineTemplate"] = consumerCommandLine;
                 EventConsumer.Put();
-                logger.TimestampInfo(String.Format("CommandLineEventConnsumer '{0}' created.", wmiSubscription));
+                logger.TimestampInfo(String.Format("CommandLineEventConnsumer '{0}' - {1} created.", wmiSubscription, consumerCommandLine));
 
                 /*
                 EventConsumer = new ManagementClass(scope, new ManagementPath("ActiveScriptEventConsumer"), null).CreateInstance();

@@ -2,21 +2,22 @@
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Threading;
+using PurpleSharp.Lib;
 
 namespace PurpleSharp.Simulations
 {
     class Execution
     {
 
-        public static void ExecuteWmiCmd(string filePath, string log)
+        public static void ExecuteWmiCmd(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1047");
             logger.TimestampInfo("Using the command line to execute the technique");
-            filePath = filePath == null
+            string filePath = playbookTask.filePath == null
                 ? @"process call create ""powershell.exe"""
-                : $@"process call create ""{filePath}""";
+                : $@"process call create ""{playbookTask.filePath}""";
             try
             {
                 // ExecutionHelper.StartProcessNET("wmic.exe", String.Format(@"process call create ""powershell.exe"""), logger);
@@ -30,7 +31,7 @@ namespace PurpleSharp.Simulations
             }
 
         }
-        public static void ExecutePowershellCmd(string command, string log)
+        public static void ExecutePowershellCmd(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
@@ -39,7 +40,7 @@ namespace PurpleSharp.Simulations
             try
             {
                 string encodedPwd = "dwBoAG8AYQBtAGkA";
-                command = command == null ? encodedPwd : Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(command));
+                string command = playbookTask.command == null ? encodedPwd : Convert.ToBase64String(System.Text.Encoding.Unicode.GetBytes(playbookTask.command));
                 ExecutionHelper.StartProcessApi("", $"powershell.exe -enc {command}", logger);
                 logger.SimulationFinished();
             }
@@ -50,7 +51,7 @@ namespace PurpleSharp.Simulations
             
         }
 
-        public static void ExecutePowershellNET(string command, string log)
+        public static void ExecutePowershellNET(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
@@ -59,6 +60,7 @@ namespace PurpleSharp.Simulations
             try
             {
                 PowerShell pstest = PowerShell.Create();
+                string command = playbookTask.command;
                 if (command == null)
                 {
                     command =  "whoami";
@@ -78,11 +80,12 @@ namespace PurpleSharp.Simulations
             
         }
 
-        public static void WindowsCommandShell(string command, string log)
+        public static void WindowsCommandShell(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1059.003");
+            string command = playbookTask.command;
             if (command == null)
             {
                 command = "whoami";
@@ -99,12 +102,15 @@ namespace PurpleSharp.Simulations
 
         }
 
-        public static void ServiceExecution(string serviceName, string servicePath, string log, bool cleanup)
+        public static void ServiceExecution(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1569.002");
             logger.TimestampInfo("Create and start services using sc.exe and Net programs.");
+            string serviceName = playbookTask.serviceName;
+            string servicePath = playbookTask.serviceName;
+            bool cleanup = playbookTask.cleanup;
             if(serviceName == null)
             {
                 serviceName = "UpdaterService";
@@ -134,19 +140,20 @@ namespace PurpleSharp.Simulations
             
         }
 
-        public static void VisualBasic(string filepath, string log)
+        public static void VisualBasic(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1059.005");
-            if (filepath == null)
+            string filePath = playbookTask.filePath;
+            if (filePath == null)
             {
-                filepath = "./files/T1059.005.vbs";
+                filePath = "./files/T1059.005.vbs";
             }
             try
             {
                 // string file = "invoice0420.vbs";
-                ExecutionHelper.StartProcessApi("", $"wscript.exe {filepath}", logger);
+                ExecutionHelper.StartProcessApi("", $"wscript.exe {filePath}", logger);
                 logger.SimulationFinished();
             }
             catch (Exception ex)
@@ -156,18 +163,19 @@ namespace PurpleSharp.Simulations
 
         }
 
-        public static void JScript(string filepath, string log)
+        public static void JScript(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1059.007");
-            if (filepath == null)
+            string filePath = playbookTask.filePath;
+            if (filePath == null)
             {
-                filepath = "./files/T1059.007.js";
+                filePath = "./files/T1059.007.js";
             }
             try
             {
-                ExecutionHelper.StartProcessApi("", $"wscript.exe {filepath}", logger);
+                ExecutionHelper.StartProcessApi("", $"wscript.exe {filePath}", logger);
                 logger.SimulationFinished();
             }
             catch (Exception ex)

@@ -22,21 +22,19 @@ namespace PurpleSharp.Simulations
 
         }
 
-        public static void RegistryRunKey(Lib.Logger logger, bool cleanup)
+        public static void RegistryRunKey(Lib.Logger logger,  string regPath, string regKey, string regValue, bool cleanup)
         {
-            string keyname = "BadApp";
-
-            RegistryKey registryKey1 = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            registryKey1.SetValue(keyname, @"C:\Windows\Temp\xyz123456.exe");
-            logger.TimestampInfo(@"Created Regkey: HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\"+ keyname+ @" - C:\\Windows\\Temp\\xyz123456.exe ");
+            RegistryKey registryKey1 = Registry.CurrentUser.OpenSubKey(regPath, true);
+            registryKey1.SetValue(regKey, regValue);
+            logger.TimestampInfo(@"Created Regkey: HKCU\" + regPath + " " + regKey + " " +regValue);
             if (cleanup)
             {
-                registryKey1.DeleteValue("BadApp");
-                logger.TimestampInfo(@"Deleted RegKey : HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\"+keyname);
+                registryKey1.DeleteValue(regKey);
+                logger.TimestampInfo(@"Deleted Regkey : HKCU\" + regPath + " " + regKey + " " +regValue);
             }
             else
             {
-                logger.TimestampInfo(@"The created RegKey : HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\"+keyname + " was not deleted as part of the simulation");
+                logger.TimestampInfo(@"The created RegKey : HKCU\"+ regPath + " " + regKey + " was not deleted as part of the simulation");
             }
             
 

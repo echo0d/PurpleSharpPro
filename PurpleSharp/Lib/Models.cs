@@ -117,7 +117,7 @@ namespace PurpleSharp.Lib
 
         // Password Spraying T1110.003
         public string protocol { get; set; } = "Kerberos";
-        public string spray_password { get; set; } = "Passw0rd1";
+        public string sprayPassword { get; set; } = "Passw0rd1";
 
         // User target variables
         // User by Password Spraying & Kerberoasting
@@ -148,14 +148,37 @@ namespace PurpleSharp.Lib
         public string taskName { get; set; } = @"PurpleSharp Updater";
         public string taskPath { get; set; } = @"C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe";
 
-        // 执行命令或可执行文件
+        // 执行命令
         public string command { get; set; }
+        // 文件路径
         public string filePath { get; set; }
         
         // 用户相关
         public string user { get; set; }
         public string password { get; set; }
         
+        // 注册表相关
+        public string regPath { get; set; }
+        public string regkey { get; set; }
+        public string regvalue { get; set; }
+        
+        // wmi订阅
+        public string wmiSubscription { get; set; }
+        public string targetInstance { get; set; }
+        public string filterQuery { get; set; }
+        public string consumerCommandLine { get; set; }
+        
+        // 远程
+        public string url { get; set; }
+        
+        // 事件日志
+        public string eventType { get; set; }
+        
+        // shellcode
+        public string shellcode { get; set; }
+        
+        // 进程信息
+        public string processName { get; set; }
 
 
 
