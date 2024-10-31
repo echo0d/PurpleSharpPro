@@ -135,6 +135,10 @@ namespace PurpleSharp.Simulations
             if (!computer.Fqdn.Equals("")) target = computer.Fqdn;
             else if (!computer.ComputerName.Equals("")) target = computer.ComputerName;
             else target = computer.IPv4;
+            if (playbook_task.servicePath == null)
+            {
+                playbook_task.servicePath = "C:\\Windows\\System32\\calc.exe";
+            }
 
             string createService = string.Format(@"\\{0} create ""{1}"" binpath= ""{2}""", target, playbook_task.serviceName, playbook_task.servicePath);
             string runService = string.Format(@"\\{0} start ""{1}""", target, playbook_task.serviceName); ;
@@ -408,7 +412,10 @@ namespace PurpleSharp.Simulations
             if (!computer.Fqdn.Equals("")) target = computer.Fqdn;
             else if (!computer.ComputerName.Equals("")) target = computer.ComputerName;
             else target = computer.IPv4;
-
+            if (playbook_task.command == null)
+            {
+                playbook_task.command = "whoami";
+            }
             string startProcess = string.Format(@"/node:""{0}"" process call create ""{1}"" ", target, playbook_task.command);
 
             string results = ExecutionHelper.StartProcessNET("wmic.exe", startProcess, logger);
@@ -487,6 +494,10 @@ namespace PurpleSharp.Simulations
             if (!computer.Fqdn.Equals("")) target = computer.Fqdn;
             else if (!computer.ComputerName.Equals("")) target = computer.ComputerName;
             else target = computer.IPv4;
+            if (playbook_task.taskPath == null)
+            {
+                playbook_task.taskPath = @"C:\Windows\System32\calc.exe";
+            }
 
             string createTask = string.Format(@"/create /s {0} /sc ONCE /st 13:30 /tn ""{1}"" /tr {2} /rl HIGHEST /ru SYSTEM", target, playbook_task.taskName, playbook_task.taskPath);
             string runTask = string.Format(@"/run /s {0} /tn ""{1}""", target, playbook_task.taskName); ;

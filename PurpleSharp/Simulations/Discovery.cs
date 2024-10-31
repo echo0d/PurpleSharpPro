@@ -322,16 +322,20 @@ namespace PurpleSharp.Simulations
             }
         }
 
-        static public void FileAndDirectoryDiscovery(string log)
+        static public void FileAndDirectoryDiscovery(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Logger logger = new Logger(currentPath + log);
             logger.SimulationHeader("T1083");
-
+            string path = playbookTask.filePath;
+            if (path == null)
+            {
+                path = @"C:\";
+            }
             try
             {
-                ExecutionHelper.StartProcessApi("", @"dir c:\ >> %temp%\download", logger);
-                ExecutionHelper.StartProcessApi("", @"dir C:\Users\ >> %temp%\download", logger);
+                ExecutionHelper.StartProcessApi("", string.Format(@"cmd.exe /c dir {0} >> %temp%\download", path), logger);
+                ExecutionHelper.StartProcessApi("", @"cmd.exe /c dir", logger);
                 logger.SimulationFinished();
             }
             catch (Exception ex)
@@ -515,19 +519,26 @@ namespace PurpleSharp.Simulations
             }
         }
 
-        public static void QueryRegistry(string log)
+        public static void QueryRegistry(PlaybookTask playbook_task, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1012");
             logger.TimestampInfo("Using the command line to execute the technique");
-
+            
             try
             {
-                ExecutionHelper.StartProcessApi("", "reg query HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall", logger);
-                ExecutionHelper.StartProcessApi("", "reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\"", logger);
-                ExecutionHelper.StartProcessApi("", "reg query HKLM\\System\\Currentcontrolset\\Service", logger);
-
+                if (playbook_task.regPath != null)
+                {
+                    ExecutionHelper.StartProcessApi("", "reg query " + playbook_task.regPath, logger);
+                }
+                else
+                {
+                    ExecutionHelper.StartProcessApi("", "reg query HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall", logger);
+                    ExecutionHelper.StartProcessApi("", "reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\"", logger);
+                    ExecutionHelper.StartProcessApi("", "reg query HKLM\\System\\Currentcontrolset\\Service", logger);
+                }
+                
                 logger.SimulationFinished();
             }
             catch (Exception ex)

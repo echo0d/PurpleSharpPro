@@ -1091,7 +1091,7 @@ namespace PurpleSharp
 
                     //T1083 File and Directory Discovery
                     case "T1083":
-                        Simulations.Discovery.FileAndDirectoryDiscovery(log);
+                        Simulations.Discovery.FileAndDirectoryDiscovery(playbookTask, log);
                         break;
 
                     //T1135 - Network Share Discovery
@@ -1149,7 +1149,7 @@ namespace PurpleSharp
                         break;
 
                     case "T1012":
-                        Simulations.Discovery.QueryRegistry(log);
+                        Simulations.Discovery.QueryRegistry(playbookTask, log);
                         break;
 
                     case "T1518.001":

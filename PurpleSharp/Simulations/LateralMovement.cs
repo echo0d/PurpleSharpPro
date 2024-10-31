@@ -62,8 +62,10 @@ namespace PurpleSharp.Simulations
 
             List<Computer> host_targets = new List<Computer>();
             List<Task> tasklist = new List<Task>();
-
-
+            if (playbook_task.serviceName == null)
+            {
+                playbook_task.serviceName = "T1021.002";
+            }
             if (playbook_task.serviceName.Equals("random"))
             {
                 string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789".ToLower();
@@ -213,6 +215,10 @@ namespace PurpleSharp.Simulations
             logger.TimestampInfo("Using schtasks.exe to execute this technique");
             List<Computer> host_targets = new List<Computer>();
             List<Task> tasklist = new List<Task>();
+            if (playbook_task.taskName == null)
+            {
+                playbook_task.taskName = "T1053-Lateral Movement";
+            }
 
             if (playbook_task.taskName.Equals("random"))
             {
