@@ -332,7 +332,7 @@ namespace PurpleSharp
                                 playbookResults.taskresults = new List<PlaybookTaskResult>();
                                 playbookResults.name = playbook.name;
                                 playbookResults.host = playbook.remote_host;
-                                logger.TimestampInfo("Running Playbook " + playbook.name);
+                                logger.Warning("Running Playbook " + playbook.name);
                                 PlaybookTask lastTask = playbook.tasks.Last();
                                 foreach (PlaybookTask task in playbook.tasks)
                                 {

@@ -3,4 +3,8 @@ PurpleSharp 是用 C# 编写的开源对手模拟工具，可在 Windows Active 
 
 原始仓库地址https://github.com/echo0d/PurpleSharp，本项目在其基础上添加了一些自定义的参数。
 
-详细使用方法请参考`./docs/*`
+
+
+* 使用文档：`./docs/*`
+
+* 剧本案例：`./Playbooks/*`

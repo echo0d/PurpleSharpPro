@@ -1,0 +1,56 @@
+{
+    "type": "local",
+    "playbooks": [
+      {
+        "name": "Create a remote scheduled task on specified hosts using schtasks.exe",
+        "enabled": false,
+        "playbook_sleep": 3,
+        "tasks": [       
+          {
+			"tactic": "Lateral Movement",
+            "technique_id": "T1053",
+            "variation": 1,
+			"cleanup": "true",
+			"taskName": "Legit Scheduled Task",
+            "taskPath" : "C:\\Windows\\System32\\calc.exe",
+			"host_target_type": 1,
+            "host_targets": ["win10-2"]            
+          }
+        ]
+      },
+      {
+        "name": "Create a remote scheduled task on random hosts using schtasks.exe",
+        "enabled": false,
+        "playbook_sleep": 3,
+        "tasks": [       
+          {
+			"tactic": "Lateral Movement",
+			"technique_id": "T1053",
+            "variation": 1,
+			"cleanup": "true",
+			"taskName": "Legit Scheduled Task",
+            "taskPath" : "C:\\Windows\\System32\\calc.exe",
+            "host_target_type": 2,
+            "host_target_total": 5
+          }
+        ]
+      },
+	{
+        "name": "Create a remote scheduled task with a random name on random hosts using schtasks.exe",
+        "enabled": false,
+        "playbook_sleep": 3,
+        "tasks": [       
+          {
+			"tactic": "Lateral Movement",
+			"technique_id": "T1053",
+            "variation": 1,
+			"cleanup": "true",
+			"taskName": "random",
+            "taskPath" : "C:\\Windows\\System32\\calc.exe",
+            "host_target_type": 2,
+            "host_target_total": 5
+          }
+        ]
+      }
+    ]
+  }

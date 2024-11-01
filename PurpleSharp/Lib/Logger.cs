@@ -67,7 +67,7 @@ namespace PurpleSharp.Lib
         }
         public void SimulationStart(string technique)
         {
-            WriteFormattedLog(LogLevel.TINFO, String.Format("Starting {0} Simulation on {1}", technique, Environment.MachineName));
+            WriteFormattedLog(LogLevel.WARNING, String.Format("Starting {0} Simulation on {1}", technique, Environment.MachineName));
         }
         public void SimulationDetails_old()
         {
@@ -121,15 +121,15 @@ namespace PurpleSharp.Lib
                     break;
 
                 case LogLevel.DEBUG:
-                pretext = System.DateTime.Now.ToString(datetimeFormat) + " [DEBUG]   ";
+                pretext = System.DateTime.Now.ToString(datetimeFormat) + " [DEBUG]  ";
                     break;
 
                 case LogLevel.WARNING:
-                    pretext = System.DateTime.Now.ToString(datetimeFormat) + " [!] ";
+                    pretext = System.DateTime.Now.ToString(datetimeFormat) + " [!]  ";
                     break;
 
                 case LogLevel.ERROR:
-                    pretext = System.DateTime.Now.ToString(datetimeFormat) + " [ERROR]   ";
+                    pretext = System.DateTime.Now.ToString(datetimeFormat) + " [ERROR]  ";
                     break;
 
                 default:
