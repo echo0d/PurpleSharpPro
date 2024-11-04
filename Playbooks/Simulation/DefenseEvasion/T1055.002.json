@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Process Injection: Portable Executable Injection - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1055.002"
+                }
+            ]
+        },
+        {
+            "name": "Process Injection: Portable Executable Injection - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1055.002",
+                    "filePath": "C:\\Windows\\system32\\notepad.exe",
+                    "shellcode": "your shellcode"
+                }
+            ]
+        }
+    ]
+}

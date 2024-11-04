@@ -16,13 +16,19 @@ namespace PurpleSharp.Simulations
             logger.TimestampInfo("Using the Win32 API NetUserAdd function to execute the technique");
             string user = playbookTask.user;
             bool cleanup = playbookTask.cleanup;
+            string password = playbookTask.password;
             if (user == null)
             {
                 user = "haxor";
             }
+
+            if (password == null)
+            {
+                password = "Passw0rd123El7";
+            }
             try
             {
-                PersistenceHelper.CreateUserApi(user, logger, cleanup);
+                PersistenceHelper.CreateUserApi(user, password, logger, cleanup);
                 logger.SimulationFinished();
             }
             catch (Exception ex)

@@ -1,0 +1,56 @@
+{
+    "type": "local",
+    "playbooks": [
+      {
+        "name": "create a local account using the Win32 API NetUserAdd",
+        "enabled": true,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1136.001",
+            "variation": 1,
+            "user": "hacker",
+            "password": "Hacker@123456",
+            "cleanup": false
+          }
+        ]
+      },
+      {
+        "name": "create a local account using the Win32 API NetUserAdd - Default",
+        "enabled": true,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1136.001",
+            "variation": 1
+          }
+        ]
+      },
+      {
+        "name": "create a local account using the command line - Default",
+        "enabled": true,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1136.001",
+            "variation": 2
+          }
+        ]
+      },
+
+      {
+        "name": "create a local account using the command line",
+        "enabled": false,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1136.001",
+            "variation": 2,
+            "user": "hacker",
+            "password": "Hacker@123456",
+            "cleanup": true
+          }
+        ]
+      }
+    ]
+  }

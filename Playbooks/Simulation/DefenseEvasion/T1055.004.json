@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Process Injection: Asynchronous Procedure Call - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1055.004"
+                }
+            ]
+        },
+        {
+            "name": "Process Injection: Asynchronous Procedure Call - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1055.004",
+                    "filePath": "C:\\Windows\\system32\\notepad.exe",
+                    "shellcode": "your shellcode"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "View file directory using the dir command line - Default",
+            "enabled": true,
+            "tasks": [
+                {
+                    "technique_id": "T1087.001"
+                }
+            ]
+        },
+        {
+            "name": "View file directory using the dir command line - Defined",
+            "enabled": true,
+            "tasks": [
+                {
+                    "technique_id": "T1087.001",
+                    "filepath": "C:\\User\\"
+                }
+            ]
+        }
+    ]
+}

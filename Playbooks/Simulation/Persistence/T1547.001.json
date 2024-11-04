@@ -1,0 +1,58 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "create a Registry Key using .NET namespace - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1547.001",
+                    "variation": 1
+                }
+            ]
+        },
+        {
+            "name": "create a Registry Key using command line - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1547.001",
+                    "variation": 2
+                }
+            ]
+        },
+        {
+            "name": "create a Registry Key using .NET namespace - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1547.001",
+                    "variation": 1,
+                    "regPath": "\"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\"",
+                    "regKey": "BadApp",
+                    "regValue": "C:\\Windows\\Temp\\xyz12345.exe",
+                    "cleanup": true
+                }
+            ]
+        },
+        {
+            "name": "create a Registry Key using command line - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1547.001",
+                    "variation": 2,
+                    "regPath": "\"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\"",
+                    "regKey": "BadApp",
+                    "regValue": "C:\\Windows\\Temp\\xyz12345.exe",
+                    "cleanup": true
+                }
+            ]
+        }
+    ]
+}

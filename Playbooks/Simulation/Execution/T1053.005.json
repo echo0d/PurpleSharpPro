@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 0,
+    "playbooks": [
+      {
+        "name": "create a scheduled task - Defined",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1053.005",
+            "taskName": "BadScheduledTask",
+            "taskPath": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "cleanup": false
+          }
+        ]
+      },
+      {
+        "name": "create a scheduled task - Default",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1053.005"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "regsvcs.exe execute .dll file - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.009"
+                }
+            ]
+        },
+        {
+            "name": "regsvcs.exe execute .dll file - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.009",
+                    "filePath": ".\\files\\T1218.009.dll"
+                }
+            ]
+        }
+    ]
+}

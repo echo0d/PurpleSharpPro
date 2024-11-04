@@ -1,0 +1,52 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Clear security Windows Event Logs using the .NET namespace - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1070.001",
+                    "variation": 1
+                }
+            ]
+        },
+        {
+            "name": "Clear Windows Event Logs using the .NET namespace - security",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1070.001",
+                    "variation": 1,
+                    "eventType": "security"
+                }
+            ]
+        },
+        {
+            "name": "Clear Windows Event Logs using command line - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1070.001",
+                    "variation": 2
+                }
+            ]
+        },
+        {
+            "name": "Clear Windows Event Logs using command line - system",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1070.001",
+                    "variation": 2,
+                    "eventType": "system"
+                }
+            ]
+        }
+    ]
+}

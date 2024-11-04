@@ -183,14 +183,14 @@ namespace PurpleSharp.Simulations
             }
 
         }
-        public static void LsassMemoryDump(string log)
+        public static void LsassMemoryDump(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1003.001");
             try
             {
-                CredAccessHelper.LsassMemoryDump(logger);
+                CredAccessHelper.LsassMemoryDump(playbookTask.cleanup, logger);
                 logger.SimulationFinished();
             }
             catch(Exception ex)

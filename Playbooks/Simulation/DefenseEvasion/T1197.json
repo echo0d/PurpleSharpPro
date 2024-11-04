@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "bitsadmin download and execute file - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1197"
+                }
+            ]
+        },
+        {
+            "name": "bitsadmin download and execute file - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1197",
+                    "url": "http://T1197.T1197.com/T1197.exe",
+                    "filePath": "C:\\Windows\\Temp\\T1197.exe"
+                }
+            ]
+        }
+    ]
+}

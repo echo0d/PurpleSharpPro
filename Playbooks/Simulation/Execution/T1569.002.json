@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 0,
+    "playbooks": [
+      {
+        "name": "create and start a  Windows service - Defined",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1569.002",
+            "serviceName": "BadService",
+            "servicePath": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+            "cleanup": false
+          }
+        ]
+      },
+      {
+        "name": "create and start a  Windows service - Default",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1569.002"
+          }
+        ]
+      }
+    ]
+  }

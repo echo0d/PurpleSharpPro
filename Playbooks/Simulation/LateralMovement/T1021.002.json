@@ -1,117 +1,127 @@
 {
-    "type": "local",
-    "playbooks": [
-	  {
-        "name": "Create and start a remote Service on specified hosts using sc.exe",
-        "enabled": false,
-        "playbook_sleep": 3,
-        "tasks": [       
-          {
-            "technique_id": "T1021.002",
-            "variation": 1,
-            "cleanup": true,
-            "serviceName": "PurpleSharp Updater",
-            "servicePath" : "C:\\Windows\\System32\\notepad.exe",
-			"host_target_type": 1,
-            "host_targets": ["win10-2"]            
-          }
-        ]
-      },
-	  {
-        "name": "Create and start a remote Service on random hosts using sc.exe",
-        "enabled": false,
-        "playbook_sleep": 3,
-        "tasks": [       
-          {
-            "technique_id": "T1021.002",
-            "cleanup": true,
-            "serviceName": "PurpleSharp Updater",
-            "servicePath" : "C:\\Windows\\System32\\notepad.exe",
-            "host_targets": ["win10-2"], 
-            "host_target_type": 2,
-            "host_target_total": 5			
-          }
-        ]
-      },
-      {
-        "name": "Create and start a remote Service on specified hosts using CreateService",
-        "enabled": false,
-        "playbook_sleep": 3,
-        "tasks": [       
-          {
-            "technique_id": "T1021.002",
-            "variation": 2,
-            "cleanup": true,
-            "serviceName": "PurpleSharp Updater",
-            "servicePath" : "C:\\Windows\\System32\\notepad.exe",
-			"host_target_type": 1,
-            "host_targets": ["win10-2"]            
-          }
-        ]
-      },
-      {
-        "name": "Create and start a remote Service on random hosts using CreateService",
-        "enabled": false,
-        "playbook_sleep": 3,
-        "tasks": [       
-          {
-            "technique_id": "T1021.002",
-            "variation": 2,
-            "cleanup": true,
-            "serviceName": "PurpleSharp Updater",
-            "servicePath" : "C:\\Windows\\System32\\notepad.exe",
-            "host_target_type": 2,
-            "host_target_total": 5
-          }
-        ]
-      },
-      {
-        "name": "Create and start a remote Service with a random name on random hosts using CreateService",
-        "enabled": false,
-        "playbook_sleep": 3,
-        "tasks": [       
-          {
-            "technique_id": "T1021.002",
-            "variation": 2,
-            "cleanup": true,
-            "serviceName": "random",
-            "servicePath" : "C:\\Windows\\System32\\notepad.exe",
-            "host_target_type": 2,
-            "host_target_total": 5          
-          }
-        ]
-      },
-      {
-        "name": "Modify and start an existing remote service on specified hosts using ChangeServiceConfig",
-        "enabled": false,
-        "playbook_sleep": 3,
-        "tasks": [       
-          {
-            "technique_id": "T1021.002",
-            "variation": 3,
-            "cleanup": true,
-            "serviceName": "PurpleSharp Updater22",
-            "servicePath" : "C:\\Windows\\System32\\notepad.exe",
-			"host_target_type": 1,
-            "host_targets": ["win10-2"]
-          }
-        ]
-      },
-      {
-        "name": "Modify and start an existing remote service on random hosts using ChangeServiceConfig",
-        "enabled": false,
-        "playbook_sleep": 3,
-        "tasks": [       
-          {
-            "technique_id": "T1021.002",
-            "variation": 2,
-            "cleanup": true,
-            "serviceName": "PurpleSharp Updater22",
-            "servicePath" : "C:\\Windows\\System32\\notepad.exe",
-            "host_target_type": 2,
-            "host_target_total": 5
-          }
-        ]
-      }
-    ]
-  }
+  "type": "local",
+  "playbooks": [
+    {
+      "name": "Create and start a remote Service on specified hosts using sc.exe",
+      "enabled": false,
+      "playbook_sleep": 3,
+      "tasks": [
+        {
+          "technique_id": "T1021.002",
+          "variation": 1,
+          "cleanup": true,
+          "serviceName": "PurpleSharp Updater",
+          "servicePath": "C:\\Windows\\System32\\notepad.exe",
+          "host_target_type": 1,
+          "host_targets": [
+            "win10-2"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Create and start a remote Service on random hosts using sc.exe",
+      "enabled": false,
+      "playbook_sleep": 3,
+      "tasks": [
+        {
+          "technique_id": "T1021.002",
+          "cleanup": true,
+          "serviceName": "PurpleSharp Updater",
+          "servicePath": "C:\\Windows\\System32\\notepad.exe",
+          "host_targets": [
+            "win10-2"
+          ],
+          "host_target_type": 2,
+          "host_target_total": 5,
+          "task_sleep": 3
+        }
+      ]
+    },
+    {
+      "name": "Create and start a remote Service on specified hosts using CreateService",
+      "enabled": false,
+      "playbook_sleep": 3,
+      "tasks": [
+        {
+          "technique_id": "T1021.002",
+          "variation": 2,
+          "cleanup": true,
+          "serviceName": "PurpleSharp Updater",
+          "servicePath": "C:\\Windows\\System32\\notepad.exe",
+          "host_target_type": 1,
+          "host_targets": [
+            "win10-2"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Create and start a remote Service on random hosts using CreateService",
+      "enabled": false,
+      "playbook_sleep": 3,
+      "tasks": [
+        {
+          "technique_id": "T1021.002",
+          "variation": 2,
+          "cleanup": true,
+          "serviceName": "PurpleSharp Updater",
+          "servicePath": "C:\\Windows\\System32\\notepad.exe",
+          "host_target_type": 2,
+          "host_target_total": 5,
+          "task_sleep": 3
+        }
+      ]
+    },
+    {
+      "name": "Create and start a remote Service with a random name on random hosts using CreateService",
+      "enabled": false,
+      "playbook_sleep": 3,
+      "tasks": [
+        {
+          "technique_id": "T1021.002",
+          "variation": 2,
+          "cleanup": true,
+          "serviceName": "random",
+          "servicePath": "C:\\Windows\\System32\\notepad.exe",
+          "host_target_type": 2,
+          "host_target_total": 5
+        }
+      ]
+    },
+    {
+      "name": "Modify and start an existing remote service on specified hosts using ChangeServiceConfig",
+      "enabled": false,
+      "playbook_sleep": 3,
+      "tasks": [
+        {
+          "technique_id": "T1021.002",
+          "variation": 3,
+          "cleanup": true,
+          "serviceName": "PurpleSharp Updater22",
+          "servicePath": "C:\\Windows\\System32\\notepad.exe",
+          "host_target_type": 1,
+          "host_targets": [
+            "win10-2"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Modify and start an existing remote service on random hosts using ChangeServiceConfig",
+      "enabled": false,
+      "playbook_sleep": 3,
+      "tasks": [
+        {
+          "technique_id": "T1021.002",
+          "variation": 2,
+          "cleanup": true,
+          "serviceName": "PurpleSharp Updater22",
+          "servicePath": "C:\\Windows\\System32\\notepad.exe",
+          "host_target_type": 2,
+          "host_target_total": 5
+        }
+      ]
+    }
+  ]
+}

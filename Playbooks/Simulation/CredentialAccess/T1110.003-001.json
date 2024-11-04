@@ -8,7 +8,7 @@
 			"tasks": [
 				{
 					"technique_id": "T1110.003",
-					"spray_password": "S1mpson123_brt",
+					"sprayPassword": "S1mpson123_brt",
 					"variation": 1,
 					"user_target_type": 1,
 					"user_targets": [
@@ -25,7 +25,7 @@
 			"tasks": [
 				{
 					"technique_id": "T1110.003",
-					"spray_password": "Spring2021",
+					"sprayPassword": "Spring2021",
 					"variation": 1,
 					"user_target_type": 2,
 					"user_target_total": 5
@@ -38,7 +38,7 @@
 			"tasks": [
 				{
 					"technique_id": "T1110.003",
-					"spray_password": "Spring2021",
+					"sprayPassword": "Spring2021",
 					"variation": 1,
 					"user_target_type": 2,
 					"user_target_total": 5,
@@ -52,7 +52,7 @@
 			"tasks": [
 				{
 					"technique_id": "T1110.003",
-					"spray_password": "Spring2021",
+					"sprayPassword": "Spring2021",
 					"variation": 1,
 					"user_target_type": 3,
 					"user_target_total": 10
@@ -65,7 +65,7 @@
 			"tasks": [
 				{
 					"technique_id": "T1110.003",
-					"spray_password": "Spring2021",
+					"sprayPassword": "Spring2021",
 					"variation": 1,
 					"protocol": "NTLM",
 					"user_target_type": 1,
@@ -84,7 +84,7 @@
 			"tasks": [
 				{
 					"technique_id": "T1110.003",
-					"spray_password": "Spring2021",
+					"sprayPassword": "Spring2021",
 					"variation": 1,
 					"protocol": "NTLM",
 					"user_target_type": 2,
@@ -98,7 +98,7 @@
 			"tasks": [
 				{
 					"technique_id": "T1110.003",
-					"spray_password": "Spring2021",
+					"sprayPassword": "Spring2021",
 					"variation": 1,
 					"protocol": "NTLM",
 					"user_target_type": 3,

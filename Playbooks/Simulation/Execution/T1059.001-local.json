@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 5,
+    "playbooks": [
+      {
+        "name": "Using the Win32 API call CreateProcess to execute powershell",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1059.001",
+            "variation": 1,
+            "command": "ls"
+          }
+        ]
+      },
+      {
+        "name": "invoke a PowerShell script using .NET",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1059.001",
+            "variation": 2,
+            "command": "ipconfig"
+          }
+        ]
+      }
+    ]
+  }

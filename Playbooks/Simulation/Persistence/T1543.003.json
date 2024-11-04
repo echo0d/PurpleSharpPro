@@ -1,0 +1,58 @@
+{
+    "type": "local",
+    "playbooks": [
+      {
+        "name": "create a Windows Service using the Win32 API OpenSCManager",
+        "enabled": true,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1543.003",
+            "variation": 1,
+            "serviceName": "hackerService",
+            "servicePath": "C:\\Windows\\Temp\\superlegit.exe",
+            "serviceDisplayName": "hackerService",
+            "cleanup": false
+          }
+        ]
+      },
+      {
+        "name": "create a Windows Service using the Win32 API OpenSCManager - Default",
+        "enabled": true,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1543.003",
+            "variation": 1
+          }
+        ]
+      },
+      {
+        "name": "create a Windows Service using the command line - Default",
+        "enabled": true,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1543.003",
+            "variation": 2
+          }
+        ]
+      },
+
+      {
+        "name": "create a Windows Service using the command line",
+        "enabled": false,
+        "playbook_sleep": 0,
+        "tasks": [
+          {
+            "technique_id": "T1543.003",
+            "variation": 2,
+            "serviceName": "hackerService",
+            "servicePath": "C:\\Windows\\Temp\\superlegit.exe",
+            "serviceDisplayName": "hackerService",
+            "cleanup": true
+          }
+        ]
+      }
+    ]
+  }

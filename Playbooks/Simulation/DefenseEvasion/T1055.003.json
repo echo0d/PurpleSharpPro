@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Process Injection: Thread Execution Hijacking - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1055.003"
+                }
+            ]
+        },
+        {
+            "name": "Process Injection: Thread Execution Hijacking - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1055.003",
+                    "filePath": "C:\\Windows\\system32\\notepad.exe",
+                    "shellcode": "your shellcode"
+                }
+            ]
+        }
+    ]
+}

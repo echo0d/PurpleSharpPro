@@ -1073,7 +1073,7 @@ namespace PurpleSharp
 
                     //T1003.001 - LSASS Memory
                     case "T1003.001":
-                        Simulations.CredAccess.LsassMemoryDump(log);
+                        Simulations.CredAccess.LsassMemoryDump(playbookTask, log);
                         break;
 
                     ////  Discovery //// 

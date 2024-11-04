@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "certutil.exe decode file - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1140"
+                }
+            ]
+        },
+        {
+            "name": "certutil.exe decode file - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1140",
+                    "filePath": ".\\file\\T1140.txt"
+                }
+            ]
+        }
+    ]
+}

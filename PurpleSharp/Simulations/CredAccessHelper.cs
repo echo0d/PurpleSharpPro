@@ -123,7 +123,7 @@ namespace PurpleSharp.Simulations
         }
 
         //Adapted from https://github.com/GhostPack/SharpDump
-        public static void LsassMemoryDump(Lib.Logger logger)
+        public static void LsassMemoryDump(bool cleanup, Lib.Logger logger)
         {
             IntPtr targetProcessHandle = IntPtr.Zero;
             uint targetProcessId = 0;
@@ -172,8 +172,15 @@ namespace PurpleSharp.Simulations
                 DateTime dtime = DateTime.Now;
                 logger.TimestampInfo(String.Format("LSASS successfully dumped to {0}\\Temp\\debug{1}.out", systemRoot, targetProcessId));
                 //Console.WriteLine("{0}[{1}] LSASS dump successful on {2} running as {3}", "".PadLeft(4), dtime.ToString("MM/dd/yyyy HH:mm:ss"), Environment.MachineName, WindowsIdentity.GetCurrent().Name);
-                File.Delete(dumpFile);
-                logger.TimestampInfo(String.Format("Dump file deleted"));
+                if (cleanup)
+                {
+                    File.Delete(dumpFile);
+                    logger.TimestampInfo(String.Format("Dump file deleted"));
+                }
+                else
+                {
+                    logger.TimestampInfo("不清理，文件没有删除");
+                }
                 //Console.WriteLine("[*] Dump file deleted");
             }
             else

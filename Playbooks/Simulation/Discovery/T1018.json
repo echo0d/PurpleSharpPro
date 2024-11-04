@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Remote System Discovery - Command Line",
+            "enabled": true,
+            "playbook_sleep": 3,
+            "tasks": [
+                {
+                    "technique_id": "T1018",
+                    "variation": 1
+                }
+            ]
+        },
+        {
+            "name": "Remote System Discovery - PowerShell",
+            "enabled": true,
+            "playbook_sleep": 3,
+            "tasks": [
+                {
+                    "technique_id": "T1018",
+                    "variation": 2
+                }
+            ]
+        }
+    ]
+}

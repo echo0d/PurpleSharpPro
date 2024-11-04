@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Download and execute. xl files remotely - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1220"
+                }
+            ]
+        },
+        {
+            "name": "Download and execute. xl files remotely - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1220",
+                    "url": "http://www.abc.com/T1220.xsl"
+                }
+            ]
+        }
+    ]
+}

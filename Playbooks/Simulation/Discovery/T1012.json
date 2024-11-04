@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Query Registry - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1012"
+                }
+            ]
+        },
+
+        {
+            "name": "Query Registry - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1012",
+                    "regPath": "\"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\""
+                }
+            ]
+        }
+    ]
+}

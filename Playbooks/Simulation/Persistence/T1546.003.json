@@ -1,0 +1,31 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "create the main pieces of a WMI Event Subscription - Default",
+            "enabled": false,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1546.003"
+                }
+            ]
+        },
+        {
+            "name": "create the main pieces of a WMI Event Subscription - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1546.003",
+                    "wmiSubscription": "MaliciousWmiSubscription",
+                    "targetInstance": "notepad.exe",
+                    "filterQuery": "SELECT * FROM __InstanceCreationEvent WITHIN 5  WHERE TargetInstance ISA 'Win32_Process' AND TargetInstance.Name = 'notepad.exe'",
+                    "consumerCommandLine": "powershell.exe -nop -c calc",
+                    "cleanup": false
+                }
+            ]
+        }
+    ]
+}

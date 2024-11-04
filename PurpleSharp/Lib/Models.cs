@@ -113,7 +113,7 @@ namespace PurpleSharp.Lib
         public string technique_id { get; set; }
         public int variation { get; set; } = 1;
         public int task_sleep { get; set; } = 0;
-        public bool cleanup { get; set; } = true;
+        public bool cleanup { get; set; } = false;
 
         // Password Spraying T1110.003
         public string protocol { get; set; } = "Kerberos";

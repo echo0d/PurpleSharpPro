@@ -1,0 +1,28 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Parent PID Spoofing - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1134.004"
+                }
+            ]
+        },
+        {
+            "name": "Parent PID Spoofing - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1134.004",
+                    "processName": "explorer",
+                    "filePath": "C:\\WINDOWS\\System32\\notepad.exe"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "InstallUtil.exe execute .exe file(Compiled with csc.exe) - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.004"
+                }
+            ]
+        },
+        {
+            "name": "InstallUtil.exe execute .exe file(Compiled with csc.exe) - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.004",
+                    "filePath": ".\\files\\T1218.004.exe"
+                }
+            ]
+        }
+    ]
+}

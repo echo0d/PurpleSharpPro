@@ -1,5 +1,6 @@
 using Microsoft.Win32;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace PurpleSharp.Simulations
@@ -40,7 +41,7 @@ namespace PurpleSharp.Simulations
 
         }
 
-        public static void CreateUserApi(String username, Lib.Logger logger, bool cleanup)
+        public static void CreateUserApi(String username, string password, Lib.Logger logger, bool cleanup)
         {
             //https://stackoverflow.com/questions/1100926/pinvoke-of-netuseradd-returns-24
             Structs.USER_INFO_2 userInfo2 = new Structs.USER_INFO_2()
@@ -62,7 +63,7 @@ namespace PurpleSharp.Simulations
                 name = username,
                 num_logons = -1, //ignored for NetUserAdd calls
                 parms = "",
-                password = "Passw0rd123$%^Elite98765432102",
+                password = password,
                 password_age = -1,
                 priv = 1,
                 script_path = "",

@@ -1,0 +1,27 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "command line cmstp.exe execute file - Default",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.003"
+                }
+            ]
+        },
+        {
+            "name": "command line cmstp.exe execute file - Defined",
+            "enabled": true,
+            "playbook_sleep": 0,
+            "tasks": [
+                {
+                    "technique_id": "T1218.003",
+                    "filePath": ".\\file\\T1218.003.txt"
+                }
+            ]
+        }
+    ]
+}

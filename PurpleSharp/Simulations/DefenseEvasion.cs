@@ -182,7 +182,7 @@ namespace PurpleSharp.Simulations
             string url = playbookTask.url;
             if (url == null)
             {
-                url = "http://100.1.1.169:8080/T1218.010.xsl";
+                url = "http://100.1.1.169:8080/T1220.xsl";
             }
             try
             {

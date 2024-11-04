@@ -10,7 +10,7 @@
         "scout_full_path": "C:\\Windows\\Temp\\Installer.exe",
         "simulator_relative_path": "AppData\\Local\\Temp\\tmp12345.exe",
         "enabled": true,
-        "pbsleep": 0,
+        "playbook_sleep": 0,
         "tasks": [
           {
             "technique_id": "T1059.001",
@@ -26,7 +26,7 @@
         "scout_full_path": "C:\\Windows\\Temp\\Installer.exe",
         "simulator_relative_path": "AppData\\Local\\Temp\\tmp12345.exe",
         "enabled": true,
-        "pbsleep": 0,
+        "playbook_sleep": 0,
         "tasks": [
           {
             "technique_id": "T1059.001",
@@ -42,7 +42,7 @@
         "scout_full_path": "C:\\Windows\\Temp\\Installer.exe",
         "simulator_relative_path": "AppData\\Local\\Temp\\tmp12345.exe",
         "enabled": true,
-        "pbsleep": 0,
+        "playbook_sleep": 0,
         "tasks": [
           {
             "technique_id": "T1059.001",

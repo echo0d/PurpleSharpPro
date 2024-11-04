@@ -1,0 +1,25 @@
+{
+    "type": "local",
+    "sleep": 5,
+    "playbooks": [
+      {
+        "name": "WMI process call executable file- Default",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1047"
+          }
+        ]
+      },
+      {
+        "name": "WMI process call executable file- Defined",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1047",
+            "filepath": ".\\file\\T1047.exe"
+          }
+        ]
+      }
+    ]
+  }
