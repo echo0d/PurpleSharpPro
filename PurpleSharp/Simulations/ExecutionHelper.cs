@@ -1,7 +1,9 @@
 using PurpleSharp.Lib;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Management.Automation;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -112,6 +114,24 @@ namespace PurpleSharp.Simulations
 
             WinAPI.CreateProcessWithLogonW(username, domain, password, lflags, command, command, (UInt32)0, (UInt32)0, currentDirectory, ref startupInfo, out processInfo);
 
+        }
+
+        public static void StartPowershellNet(string command, Lib.Logger logger)
+        {
+            try
+            {
+                PowerShell pstest = PowerShell.Create();
+                pstest.AddScript(command);
+                logger.TimestampInfo(String.Format("Using the System.Diagnostics .NET namespace to execute '{0} {1}'", "powershell.exe", command));
+                int currentProcessId = Process.GetCurrentProcess().Id;
+                Collection<PSObject> output = pstest.Invoke();
+                logger.TimestampInfo(String.Format("Process successfully created. (PID): " + currentProcessId));
+            }
+            catch (Exception e)
+            {
+                logger.TimestampInfo("Could not start process!");
+            }
+            
         }
     }
 

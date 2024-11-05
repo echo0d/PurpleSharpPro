@@ -40,7 +40,7 @@ namespace PurpleSharp
             variation = 1;
             pbsleep = tsleep = 0;
             nusers = nhosts = 7;
-            opsec = cleanup = true;
+            opsec = cleanup = false;
             verbose = scoutservice = simservice = newchild = scout = remote = navigator = false; 
             techniques = rhost = domain = ruser = rpwd = dc = pb_file = nav_action = navfile = scout_action = "";
             CommandlineParameters config_params=new CommandlineParameters();
@@ -96,40 +96,51 @@ namespace PurpleSharp
                         //// User Parameters ////
                         case "/pb":
                             pb_file = args[i + 1];
+                            i++;
                             break;
                         case "/rhost":
                             rhost = args[i + 1];
+                            i++;
                             remote = true;
                             break;
                         case "/ruser":
                             ruser = args[i + 1];
+                            i++;
                             break;
                         case "/d":
                             domain = args[i + 1];
                             break;
                         case "/rpwd":
                             rpwd = args[i + 1];
+                            i++;
                             break;
                         case "/dc":
                             dc = args[i + 1];
+                            i++;
                             break;
                         case "/t":
                             techniques = args[i + 1];
+                            i++;
                             break;
                         case "/scoutpath":
                             scoutfpath = args[i + 1];
+                            i++;
                             break;
                         case "/simpath":
                             simrpath = args[i + 1];
+                            i++;
                             break;
                         case "/pbsleep":
                             pbsleep = Int32.Parse(args[i + 1]);
+                            i++;
                             break;
                         case "/tsleep":
                             tsleep = Int32.Parse(args[i + 1]);
+                            i++;
                             break;
                         case "/var":
                             variation = Int32.Parse(args[i + 1]);
+                            i++;
                             break;
                         case "/noopsec":
                             opsec = false;
@@ -143,11 +154,17 @@ namespace PurpleSharp
                         case "/scout":
                             scout = true;
                             scout_action = args[i + 1];
+                            i++;
                             break;
                         case "/navigator":
                             navigator = true;
                             nav_action = args[i + 1];
-                            if (nav_action.Equals("import")) navfile = args[i + 2];
+                            i++;
+                            if (nav_action.Equals("import"))
+                            {
+                                navfile = args[i + 2];
+                                i++;
+                            }
                             break;
 
                         //// Internal Parameters ////
@@ -161,6 +178,7 @@ namespace PurpleSharp
                             newchild = true;
                             break;
                         default:
+                            Console.WriteLine("Error，参数错误");
                             break;
                     }
 
@@ -1053,7 +1071,13 @@ namespace PurpleSharp
                     case "T1134.004":
                         Simulations.DefenseEvasion.ParentPidSpoofing(log, playbookTask);
                         break;
-
+                    case "T1562.001":
+                        Simulations.DefenseEvasion.DisableWinDefender(log, playbookTask);
+                        break;
+                    case "T1564.002":
+                        Simulations.DefenseEvasion.CreateHiddenUser(log,playbookTask);
+                        break;
+                    
                     //T1218.010 - Regsvr32
 
 
@@ -1063,17 +1087,20 @@ namespace PurpleSharp
                     case "T1110.003":
                         if (playbookTask.variation == 1) Simulations.CredAccess.LocalDomainPasswordSpray(playbookTask, log);
                         else Simulations.CredAccess.RemoteDomainPasswordSpray(playbookTask, log);
-
                         break;
 
                     //T1558.003 - Kerberoasting
                     case "T1558.003":
                         Simulations.CredAccess.Kerberoasting(playbookTask, log);
                         break;
-
+                    // T1003
+                    // leveraged Mimikatz to dump credentials on Windows hosts.
+                    
                     //T1003.001 - LSASS Memory
                     case "T1003.001":
-                        Simulations.CredAccess.LsassMemoryDump(playbookTask, log);
+                        if (playbookTask.variation == 1) Simulations.CredAccess.RunMimikatz(playbookTask, log);
+                        else if(playbookTask.variation == 2) Simulations.CredAccess.ExecuteAssemblyMimikatz(log);
+                        else Simulations.CredAccess.LsassMemoryDump(playbookTask, log);
                         break;
 
                     ////  Discovery //// 
@@ -1114,6 +1141,7 @@ namespace PurpleSharp
                     case "T1087.002":
                         if (playbookTask.variation == 1) Simulations.Discovery.DomainAccountDiscoveryCmd(log);
                         else if (playbookTask.variation == 2) Simulations.Discovery.DomainAccountDiscoveryPowerShell(log);
+                        else if (playbookTask.variation == 3) Simulations.Discovery.PrivilegeEnumeration(playbookTask, log); //域内管理员枚举
                         else Simulations.Discovery.DomainAccountDiscoveryLdap(log);
                         break;
 
@@ -1189,14 +1217,13 @@ namespace PurpleSharp
                     // Impact
 
                     // Other Techniques
-
-                    case "privenum":
-                        Simulations.Discovery.PrivilegeEnumeration(playbookTask.host_target_total, playbookTask.task_sleep, log);
-                        break;
+                    
 
                     default:
+                        string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+                        Lib.Logger logger = new Lib.Logger(currentPath + log);
+                        logger.Error(playbookTask.technique_id + "--- 尚不支持！" );
                         break;
-
                 }
             }
             else if (playbookTask.tactic.ToLower().Equals("lateral movement"))
@@ -1214,6 +1241,9 @@ namespace PurpleSharp
                         break;
 
                     default:
+                        string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+                        Lib.Logger logger = new Lib.Logger(currentPath + log);
+                        logger.Error("lateral movement--" + playbookTask.technique_id + "---尚不支持！" );
                         break;
                 }
 

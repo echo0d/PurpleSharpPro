@@ -1,0 +1,26 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "Disable Windows Defender with DISM",
+            "enabled": true,
+            "tasks": [
+                {
+                    "technique_id": "T1562.001",
+                    "variation": 1
+                }
+            ]
+        },
+        {
+            "name": "Tamper with Windows Defender Registry",
+            "enabled": true,
+            "tasks": [
+                {
+                    "technique_id": "T1562.001",
+                    "variation": 2
+                }
+            ]
+        }
+    ]
+}

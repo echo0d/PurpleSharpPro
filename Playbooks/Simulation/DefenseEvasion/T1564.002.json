@@ -1,0 +1,16 @@
+{
+    "type": "local",
+    "sleep": 1,
+    "playbooks": [
+        {
+            "name": "创建&修改用户为隐藏用户",
+            "enabled": true,
+            "tasks": [
+                {
+                    "technique_id": "T1564.002",
+                    "user":"echo0d"
+                }
+            ]
+        }
+    ]
+}

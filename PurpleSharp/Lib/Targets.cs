@@ -185,7 +185,8 @@ namespace PurpleSharp.Lib
             return targetusers;
         }
 
-        public static List<Computer> GetHostTargets_old(int servertype, int nhosts, Lib.Logger logger)
+        public static List<Computer> GetHostTargets_old(int nhosts, Lib.Logger logger)
+        // public static List<Computer> GetHostTargets_old(int servertype, int nhosts, Lib.Logger logger)
         {
             List<Computer> targethosts = new List<Computer>();
             /*

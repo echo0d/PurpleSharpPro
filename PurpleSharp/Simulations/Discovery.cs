@@ -86,18 +86,20 @@ namespace PurpleSharp.Simulations
             }
         }
 
-        public static void PrivilegeEnumeration(int nhost, int sleep, string log)
+        public static void PrivilegeEnumeration( PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
-            logger.SimulationHeader("T0XXX");
+            logger.SimulationHeader("T1087.001");
             logger.TimestampInfo("Using the System.Management .NET API to execute this technique");
-
+            int nhost = playbookTask.host_target_total;
+            int sleep = playbookTask.task_sleep;
             List<Task> tasklist = new List<Task>();
             var rand = new Random();
-            int computertype = rand.Next(1, 6);
-
-            List<Computer> targetcomputers = Lib.Targets.GetHostTargets_old(computertype, nhost, logger);
+            // int computertype = rand.Next(1, 6);
+            // List<Computer> targetcomputers = Lib.Targets.GetHostTargets_old(computertype, nhost, logger);
+            
+            List<Computer> targetcomputers = Lib.Targets.GetHostTargets_old(nhost, logger);
             Console.WriteLine("[*] Starting Find local administrator from {0} as {1}", Environment.MachineName, WindowsIdentity.GetCurrent().Name);
             if (sleep > 0) Console.WriteLine("[*] Sleeping {0} seconds between enumeration", sleep);
             foreach (Computer computer in targetcomputers)

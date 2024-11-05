@@ -21,9 +21,9 @@ namespace PurpleSharp.Simulations
             try
             {
                 var rand = new Random();
-                int computertype = rand.Next(1, 6);
+                // int computertype = rand.Next(1, 6);
                 logger.TimestampInfo(String.Format("Querying LDAP for random targets..."));
-                List<Computer> targethosts = Targets.GetHostTargets_old(computertype, nhost, logger);
+                List<Computer> targethosts = Targets.GetHostTargets_old(nhost, logger);
                 logger.TimestampInfo(String.Format("Obtained {0} target computers", targethosts.Count));
                 List<Task> tasklist = new List<Task>();
                 //Console.WriteLine("[*] Starting Service Based Lateral Movement attack from {0} as {1}", Environment.MachineName, WindowsIdentity.GetCurrent().Name);

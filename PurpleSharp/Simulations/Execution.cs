@@ -66,12 +66,8 @@ namespace PurpleSharp.Simulations
                     command =  "whoami";
                 }
                 // script = System.Text.Encoding.Unicode.GetString(System.Convert.FromBase64String(script));
-                pstest.AddScript(command);
-                Collection<PSObject> output = null;
-                output = pstest.Invoke();
-                logger.TimestampInfo("Succesfully invoked a PowerShell script using .NET");
+                ExecutionHelper.StartPowershellNet(command, logger);
                 logger.SimulationFinished();
-                
             }
             catch (Exception ex)
             {
@@ -148,7 +144,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = "./files/T1059.005.vbs";
+                filePath = "C:\\Windows\\Temp\\files\\T1059.005.vbs";
             }
             try
             {
@@ -171,7 +167,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = "./files/T1059.007.js";
+                filePath = "C:\\Windows\\Temp\\files\\T1059.007.js";
             }
             try
             {

