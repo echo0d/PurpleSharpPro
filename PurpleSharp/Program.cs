@@ -1180,6 +1180,9 @@ namespace PurpleSharp
                     // Collection
 
                     // Command and Control
+                    case "T1105":
+                        Simulations.CommandControl.PowerShellDownload(playbookTask, log);
+                        break;
 
                     // Exfiltration
 

