@@ -21,7 +21,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\file\T1218.003.txt";
+                filePath = @"C:\Windows\Temp\files\T1218.003.txt";
             }
             try
             {
@@ -65,7 +65,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\files\T1218.004.exe";
+                filePath = @"C:\Windows\Temp\files\T1218.004.exe";
             }
             try
             {
@@ -86,7 +86,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\files\T1218.009.dll";
+                filePath = @"C:\Windows\Temp\files\T1218.009.dll";
             }
             try
             {
@@ -114,7 +114,7 @@ namespace PurpleSharp.Simulations
             }
             if (filePath == null)
             {
-                filePath =  @"C:\Windows\Temp\T1197.exe";
+                filePath =  @"C:\Windows\Temp\files\T1197.exe";
             }
             
             try
@@ -157,7 +157,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\file\T1140.txt";
+                filePath = @"C:\Windows\Temp\files\T1140.txt";
             }
             try
             {
@@ -203,7 +203,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = @".\files\T1218.011.dll";
+                filePath = @"C:\Windows\Temp\files\T1218.011.dll";
             }
             try
             {

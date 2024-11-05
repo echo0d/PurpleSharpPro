@@ -148,7 +148,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = "./files/T1059.005.vbs";
+                filePath = "C:\\Windows\\Temp\\files\\T1059.005.vbs";
             }
             try
             {
@@ -171,7 +171,7 @@ namespace PurpleSharp.Simulations
             string filePath = playbookTask.filePath;
             if (filePath == null)
             {
-                filePath = "./files/T1059.007.js";
+                filePath = "C:\\Windows\\Temp\\files\\T1059.007.js";
             }
             try
             {

