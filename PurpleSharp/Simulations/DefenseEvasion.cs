@@ -440,7 +440,6 @@ namespace PurpleSharp.Simulations
                     logger.TimestampInfo("新建用户");
                     PersistenceHelper.CreateUserApi(playbookTask.user, playbookTask.password, logger, false);
                 }
-                
                 DefenseEvasionHelper.HiddenUser(playbookTask.user, logger);
                 
             }
